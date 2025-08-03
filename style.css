@@ -1,0 +1,677 @@
+/* Font Face Declaration */
+@font-face {
+    font-family: 'Gidolinya';
+    src: url('Fonts/Gidole-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Gidolinya', 'Latin Modern Roman', serif;
+    background-color: #ffffff;
+    color: #121212;
+    line-height: 1.6;
+}
+
+/* Prevent overscroll/bounce on mobile browsers */
+html, body {
+    overscroll-behavior: none;
+    overscroll-behavior-y: none;
+    touch-action: pan-x pan-y;
+}
+
+/* Typography */
+h1 {
+    font-size: 2.8125rem;
+    margin-bottom: 1.5rem;
+}
+
+h2 {
+    font-size: 2.25rem;
+    margin-bottom: 1rem;
+}
+
+p {
+    font-size: 1.125rem;
+    margin-bottom: 1rem;
+}
+
+/* Layout */
+main {
+    max-width: 1200px;
+    margin: 8rem auto 2rem;
+    padding: 0 2rem;
+}
+
+section {
+    margin-bottom: 3rem;
+}
+
+/* Header & Navigation */
+header {
+    background-color: #ffffff;
+    color: #121212;
+    padding: 1rem 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1200000;
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.name {
+    font-size: 1.6875rem;
+}
+
+.name a {
+    color: #121212;
+    text-decoration: none;
+}
+
+.menu-toggle {
+    display: none;
+    cursor: pointer;
+    font-size: 1.6875rem;
+    color: #121212;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+
+nav a {
+    color: #121212; /* Default link color */
+    text-decoration: none; /* Remove underline by default */
+    transition: opacity 0.3s ease;
+    font-size: 1.125rem;
+}
+
+nav a:hover {
+    opacity: 0.6;
+}
+
+nav a.active,
+nav a[aria-current="page"] {
+    border-bottom: 1px solid #121212 !important;
+}
+
+/* Footer */
+footer {
+    width: 100%;
+    background-color: #ffffff;
+    margin-top: 2rem;
+}
+
+.contact-links {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.contact-link {
+    color: #121212;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+    font-size: 1.125rem;
+}
+
+.contact-link:hover {
+    opacity: 0.6;
+}
+
+/* Images */
+.profile-image {
+    width: 100%;
+    max-width: 200px;
+    margin: 2rem auto;
+    display: block;
+    border-radius: 4px;
+}
+
+/* Carousel */
+.carousel-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.carousel {
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%;
+    overflow: hidden;
+    margin-top: 2rem;
+}
+
+.carousel-inner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-item {
+    min-width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.carousel-item img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.carousel-description {
+    width: 100%;
+    text-align: center;
+    font-size: 1.375rem;
+    color: #121212;
+    font-style: italic;
+    margin-bottom: 1.25rem;
+}
+
+.carousel-controls {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+    z-index: 10;
+}
+
+.carousel-button {
+    background: rgba(255, 255, 255, 0.7);
+    border: none;
+    padding: 1rem;
+    cursor: pointer;
+    font-size: 1.875rem;
+    color: #121212;
+    transition: background-color 0.3s ease;
+}
+
+.carousel-button:hover {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.carousel-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #121212;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.indicator.active {
+    background: #121212;
+}
+
+/* Mobile Menu Overlay */
+.menu-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.2);
+    z-index: 1200;
+}
+
+.menu-overlay.active {
+    display: block;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+        z-index: 1002;
+    }
+
+    nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: #ffffff;
+        display: none;
+        z-index: 1001;
+        padding-top: 4rem;
+    }
+
+    nav.active {
+        display: block;
+    }
+
+    nav ul {
+        flex-direction: column;
+        padding: 1rem 0;
+        gap: 0;
+    }
+
+    /* Style nav links specifically in mobile view */
+    nav a {
+        padding: 1.5rem 2rem;
+        font-size: 1.5rem;
+        text-align: left;
+    }
+
+    nav a:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+        opacity: 1;
+    }
+
+    /* Hide location/date on mobile */
+    .resume-entry .location-date {
+        display: none !important;
+    }
+}
+
+/* Resume Styles */
+.resume-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #121212; /* Matching header/footer border */
+}
+
+.resume-section:last-child {
+    border-bottom: none;
+}
+
+.resume-entry {
+    margin-bottom: 1rem;
+}
+
+.resume-entry h3 {
+    margin-bottom: 0.3rem;
+}
+
+.resume-entry p {
+    margin-bottom: 0.5rem;
+}
+
+.resume-entry ul {
+    margin-top: 0.5rem;
+    margin-left: 1.5rem;
+    list-style: disc;
+}
+
+.resume-entry li {
+    margin-bottom: 0.3rem;
+}
+
+.resume-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.resume-header h1 {
+    margin-bottom: 0.5rem;
+}
+
+.resume-header p {
+    margin-bottom: 0;
+}
+
+.resume-entry-with-logo {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    gap: 1.5rem; /* Space between logo and text */
+}
+
+.company-logo {
+    width: 50px; /* Adjust size as needed */
+    height: auto;
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+.resume-entry-details {
+    flex-grow: 1; /* Allow text details to take up remaining space */
+}
+
+.resume-entry .location-date {
+    display: none;
+    font-size: 1.125em; /* Slightly smaller font for location/date */
+    color: #545454; /* A slightly lighter color */
+    margin-left: 0.5em; /* Space after the job title */
+}
+
+.resume-entry:hover .location-date {
+    display: inline;
+}
+
+
+/* Blog Styles */
+.blog-description {
+    font-size: 1.375rem;
+    font-style: italic;
+    margin-bottom: 3rem;
+    line-height: 1.7;
+}
+
+/* Blog Index Styles */
+.blog-index {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.blog-index-item {
+    padding-bottom: 1.5rem;
+}
+
+.blog-index-item:last-child {
+    padding-bottom: 0;
+}
+
+.blog-index-item h2 {
+    font-size: 1.6875rem;
+    margin-bottom: 0.5rem;
+}
+
+.blog-index-item h2 a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid #121212;
+    transition: opacity 0.3s ease;
+}
+
+.blog-index-item h2 a:hover {
+    opacity: 0.6;
+}
+
+.post-excerpt {
+    color: #545454;
+    line-height: 1.6;
+}
+
+/* Individual Blog Post Styles */
+.blog-nav {
+    margin-bottom: 2rem;
+}
+
+.back-link {
+    color: #121212;
+    text-decoration: none;
+    font-size: 1.125rem;
+    transition: opacity 0.3s ease;
+}
+
+.back-link:hover {
+    opacity: 0.6;
+}
+
+.post-header {
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.post-header h1 {
+    font-size: 1.6875rem;
+    margin-bottom: 0.5rem;
+}
+
+.post-meta {
+    font-style: italic;
+    color: #545454;
+    margin-bottom: 0;
+    font-size: 1.375rem;
+}
+
+.post-content h1 {
+    font-size: 1.6875rem;
+    margin: 3rem 0 1.5rem 0;
+}
+
+.post-content h2 {
+    font-size: 1.5rem;
+    margin: 2.5rem 0 1rem 0;
+}
+
+.post-content h3 {
+    font-size: 1.25rem;
+    margin: 2rem 0 1rem 0;
+}
+
+.post-content blockquote {
+    border-left: 3px solid #121212;
+    margin: 2rem 0;
+    padding: 1rem 0 1rem 2rem;
+    font-style: italic;
+    background-color: rgba(25, 25, 25, 0.05);
+}
+
+.post-content blockquote p {
+    margin-bottom: 1rem;
+}
+
+.post-content blockquote cite {
+    font-style: normal;
+    font-size: 1.125rem;
+    color: #545454;
+    display: block;
+    margin-top: 1rem;
+}
+
+.post-content ol {
+    margin: 1rem 0 1rem 2rem;
+    list-style: decimal;
+}
+
+.post-content ol li {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+    font-size: 1.125rem;
+}
+
+.post-content em {
+    font-style: italic;
+}
+
+.loading {
+    text-align: center;
+    padding: 3rem;
+    color: #545454;
+}
+
+.error-message {
+    text-align: center;
+    padding: 3rem;
+}
+
+.error-message a {
+    color: #121212;
+    text-decoration: none;
+    border-bottom: 1px solid #121212;
+}
+
+/* Mobile adjustments for blog */
+@media (max-width: 768px) {
+    .blog-index {
+        gap: 1rem;
+    }
+    
+    .blog-index-item {
+        padding-bottom: 1rem;
+    }
+    
+    .blog-index-item h2 {
+        font-size: 1.4625rem;
+    }
+    
+    .post-header h1 {
+        font-size: 1.6875rem;
+    }
+    
+    .post-content h1 {
+        font-size: 1.6875rem;
+    }
+    
+    .post-content h2 {
+        font-size: 1.5rem;
+    }
+    
+    .post-content h3 {
+        font-size: 1.25rem;
+    }
+    
+    .post-content blockquote {
+        margin: 1.5rem 0;
+        padding: 0.8rem 0 0.8rem 1.5rem;
+    }
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #121212;
+        color: #ffffff;
+    }
+
+    header, nav, footer {
+        background-color: #121212;
+    }
+
+    .menu-toggle, .contact-link, .name a {
+        color: #ffffff;
+    }
+
+    /* Ensure nav links are white and not underlined in dark mode - general style */
+    nav a {
+        color: #ffffff; /* Ensure nav link color in dark mode */
+        text-decoration: none; /* Ensure no underline in dark mode */
+    }
+
+    /* Dark mode mobile menu adjustments */
+    @media (max-width: 768px) {
+        nav a {
+            /* No borders needed */
+        }
+    }
+
+    .carousel-button {
+        color: #ffffff;
+        background: rgba(84, 84, 84, 0.7);
+    }
+
+    .carousel-button:hover {
+        background: rgba(84, 84, 84, 0.9);
+    }
+
+    .carousel-indicators .indicator {
+        background: #ffffff;
+    }
+
+    .carousel-indicators .indicator.active {
+        background: #ffffff;
+        opacity: 0.7;
+    }
+
+    .carousel-description {
+        color: #ffffff;
+    }
+
+    nav li:hover {
+        background-color: rgba(255,255,255,0.05);
+    }
+
+    nav li {
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* Dark mode adjustments for resume specific styles */
+    .resume-section {
+        border-bottom-color: #F5F5F4;
+    }
+
+    .resume-entry .location-date {
+        color: #a9a9a9; /* Lighter color for dark mode */
+    }
+
+    /* Corrected nav a hover color in dark mode (already done, keeping for clarity) */
+    nav a:hover {
+        color: #ffffff; /* Ensure hover color is consistent */
+        opacity: 0.6;
+        text-decoration: none;
+    }
+
+    /* Dark mode adjustments for project title link on mobile */
+    @media (max-width: 768px) {
+        .resume-section h3 a {
+            color: inherit; /* Ensure color inherits correctly in dark mode mobile */
+        }
+    }
+
+    /* Dark mode navigation active/current page styling */
+    nav a.active,
+    nav a[aria-current="page"] {
+        border-bottom: 1px solid #ffffff !important;
+    }
+
+    /* Dark mode blog styles */
+    .blog-index-item h2 a {
+        border-bottom-color: #ffffff;
+    }
+
+    .post-meta, .post-excerpt {
+        color: #a9a9a9;
+    }
+
+    .back-link {
+        color: #ffffff;
+    }
+
+    .post-content blockquote {
+        border-left-color: #ffffff;
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .post-content blockquote cite {
+        color: #a9a9a9;
+    }
+
+    .error-message a {
+        color: #ffffff;
+        border-bottom-color: #ffffff;
+    }
+}
