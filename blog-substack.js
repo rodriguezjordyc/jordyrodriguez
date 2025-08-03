@@ -313,15 +313,8 @@ async function showBlogIndex() {
         
         html += `
             <article class="blog-index-item">
-                <div class="card-header">
-                    <span class="publication-badge">${post.feed_name}</span>
-                </div>
-                <div class="card-content">
-                    <h2><a href="${post.original_link}" target="_blank">${post.title}</a></h2>
-                </div>
-                <div class="card-footer">
-                    <span class="post-date">${formattedDate}</span>
-                </div>
+                <h2><a href="${post.original_link}" target="_blank">${post.title}</a></h2>
+                <p class="post-excerpt">Published ${formattedDate}</p>
             </article>
         `;
     }
