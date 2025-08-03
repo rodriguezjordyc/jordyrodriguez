@@ -79,10 +79,27 @@ async function fetchSubstackPosts() {
                     const feedSlug = feed.name.toLowerCase().replace(/\s+/g, '-');
                     const slug = `${feedSlug}-${baseSlug}`;
                     
+                    // Extract actual excerpt from description or create a clean one
+                    const description = item.querySelector('description')?.textContent || '';
+                    let cleanExcerpt = '';
+                    
+                    if (description) {
+                        // Remove HTML tags and get first sentence or ~100 chars
+                        const tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = description;
+                        const textContent = tempDiv.textContent || tempDiv.innerText || '';
+                        cleanExcerpt = textContent.substring(0, 120).trim() + (textContent.length > 120 ? '...' : '');
+                    }
+                    
+                    // Fallback if no description
+                    if (!cleanExcerpt) {
+                        cleanExcerpt = 'Click to read this post on Substack';
+                    }
+
                     allPosts.push({
                         slug: slug,
                         title: title,
-                        excerpt: `Published ${new Date(pubDate).toLocaleDateString()}`,
+                        excerpt: cleanExcerpt,
                         original_link: link,
                         publication_date: pubDate,
                         feed_name: feed.name,
@@ -283,14 +300,28 @@ async function showBlogIndex() {
         return;
     }
     
-    // Generate blog index HTML - just a clean table of contents
+    // Generate blog index HTML - card grid layout
     let html = '<div class="blog-index">';
     
     for (const [slug, post] of Object.entries(posts)) {
+        const postDate = new Date(post.publication_date);
+        const formattedDate = postDate.toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'short', 
+            day: 'numeric' 
+        });
+        
         html += `
             <article class="blog-index-item">
-                <h2><a href="${post.original_link}" target="_blank">${post.title}</a></h2>
-                <p class="post-excerpt">${post.excerpt}</p>
+                <div class="card-header">
+                    <span class="publication-badge">${post.feed_name}</span>
+                </div>
+                <div class="card-content">
+                    <h2><a href="${post.original_link}" target="_blank">${post.title}</a></h2>
+                </div>
+                <div class="card-footer">
+                    <span class="post-date">${formattedDate}</span>
+                </div>
             </article>
         `;
     }
