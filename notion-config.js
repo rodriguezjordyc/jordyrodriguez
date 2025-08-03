@@ -7,10 +7,10 @@
 // 5. Copy your database ID from the URL
 
 const NOTION_CONFIG = {
-    // Replace with your actual values when deploying
+    // This will be replaced by GitHub Actions during deployment
     API_TOKEN: 'YOUR_NOTION_API_TOKEN_HERE',
     
-    // Replace with your database ID (from the URL of your database)
+    // This will be replaced by GitHub Actions during deployment
     DATABASE_ID: 'YOUR_DATABASE_ID_HERE',
     
     // API endpoint
