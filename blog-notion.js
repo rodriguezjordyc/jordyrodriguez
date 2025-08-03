@@ -65,7 +65,7 @@ async function fetchNotionPosts() {
 
         // Process each post
         for (const page of data.results) {
-            const title = page.properties.Title?.title?.[0]?.plain_text || 'Untitled';
+            const title = page.properties.Name?.title?.[0]?.plain_text || 'Untitled';
             const slug = title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
             
             // Extract publication date
