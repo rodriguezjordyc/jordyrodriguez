@@ -8,10 +8,10 @@
 
 const NOTION_CONFIG = {
     // This will be replaced by GitHub Actions during deployment
-    NOTION_API_TOKEN: 'YOUR_NOTION_API_TOKEN_HERE',
+    API_TOKEN: 'YOUR_NOTION_API_TOKEN_HERE',
     
     // This will be replaced by GitHub Actions during deployment
-    NOTION_DATABASE_ID: 'YOUR_DATABASE_ID_HERE',
+    DATABASE_ID: 'YOUR_DATABASE_ID_HERE',
     
     // API endpoint
     API_BASE: 'https://api.notion.com/v1'
