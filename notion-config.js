@@ -11,8 +11,7 @@ const NOTION_CONFIG = {
     API_TOKEN: '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',
     
     // Database ID
-    DATABASE_ID: '24479889bbb181e9a593000cbcd959b2',
-    
+    DATABASE_ID: '24479889bbb18183854bc5a859b9c323',
     // API endpoint
     API_BASE: 'https://api.notion.com/v1'
 };
