@@ -393,7 +393,7 @@ footer {
 .blog-index {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: .8rem;
 }
 
 .blog-index-item {
