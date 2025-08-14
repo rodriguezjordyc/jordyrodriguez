@@ -432,7 +432,7 @@ footer {
 /* Individual Blog Post Styles */
 .blog-nav {
     position: sticky;
-    top: 5rem; /* Position below fixed header */
+    top: 4rem; /* Position flush against fixed header */
     background-color: #ffffff;
     padding: 1rem 0;
     margin-bottom: 1rem;
@@ -638,7 +638,7 @@ footer {
     }
     
     .blog-nav {
-        top: 4rem; /* Adjust for smaller mobile header */
+        top: 3.5rem; /* Flush against mobile header */
         padding: 0.75rem 0;
     }
     
