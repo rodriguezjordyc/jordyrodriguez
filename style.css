@@ -431,7 +431,13 @@ footer {
 
 /* Individual Blog Post Styles */
 .blog-nav {
-    margin-bottom: 2rem;
+    position: sticky;
+    top: 5rem; /* Position below fixed header */
+    background-color: #ffffff;
+    padding: 1rem 0;
+    margin-bottom: 1rem;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(18, 18, 18, 0.1);
 }
 
 .back-link {
@@ -632,6 +638,11 @@ footer {
         font-size: 1.25rem;
     }
     
+    .blog-nav {
+        top: 4rem; /* Adjust for smaller mobile header */
+        padding: 0.75rem 0;
+    }
+    
     .post-header h1 {
         font-size: 1.6875rem;
     }
@@ -778,6 +789,11 @@ footer {
         color: #a9a9a9;
     }
 
+    .blog-nav {
+        background-color: #121212;
+        border-bottom-color: rgba(255, 255, 255, 0.1);
+    }
+    
     .back-link {
         color: #ffffff;
     }
