@@ -427,10 +427,10 @@ footer {
 }
 
 .post-excerpt {
-    color: #121212;
+    color: #545454;
     line-height: 1.6;
     font-size: 1rem;
-    font-weight: 200;
+    font-weight: 100;
 }
 
 /* Individual Blog Post Styles */
@@ -465,10 +465,10 @@ footer {
 }
 
 .post-meta {
-    color: #121212;
+    color: #545454;
     margin-bottom: 0;
     font-size: 1rem;
-    font-weight: 200;
+    font-weight: 100;
 }
 
 .post-content h1 {
@@ -791,7 +791,7 @@ footer {
     }
 
     .post-excerpt {
-        color: #ffffff;
+        color: #a9a9a9;
     }
 
     .blog-nav {
@@ -811,7 +811,7 @@ footer {
     }
     
     .post-meta {
-        color: #ffffff;
+        color: #a9a9a9;
     }
     
     .post-content a {
