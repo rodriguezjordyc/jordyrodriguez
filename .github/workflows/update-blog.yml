@@ -26,11 +26,8 @@ jobs:
       with:
         node-version: '18'
 
-    - name: Install dependencies
-      run: npm install
-
     - name: Fetch blog content
-      run: npm run fetch-blog
+      run: node scripts/fetch-blog-content.js
 
     - name: Check for changes
       id: verify-changed-files

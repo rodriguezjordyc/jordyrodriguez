@@ -3,6 +3,46 @@
 const fs = require('fs');
 const path = require('path');
 
+// For Node.js environments that don't have fetch built-in
+if (typeof fetch === 'undefined') {
+    global.fetch = require('https').get;
+    // Simplified fetch polyfill for Node.js
+    global.fetch = async (url, options = {}) => {
+        const https = require('https');
+        const urlParsed = new URL(url);
+        
+        return new Promise((resolve, reject) => {
+            const req = https.request({
+                hostname: urlParsed.hostname,
+                port: urlParsed.port || 443,
+                path: urlParsed.pathname + urlParsed.search,
+                method: options.method || 'GET',
+                headers: options.headers || {}
+            }, (res) => {
+                let data = '';
+                res.on('data', chunk => data += chunk);
+                res.on('end', () => {
+                    resolve({
+                        ok: res.statusCode >= 200 && res.statusCode < 300,
+                        status: res.statusCode,
+                        statusText: res.statusMessage,
+                        json: () => Promise.resolve(JSON.parse(data)),
+                        text: () => Promise.resolve(data)
+                    });
+                });
+            });
+            
+            req.on('error', reject);
+            
+            if (options.body) {
+                req.write(options.body);
+            }
+            
+            req.end();
+        });
+    };
+}
+
 // Notion API configuration
 const NOTION_API_KEY = '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';
 const DATABASE_ID = '24f79889bbb181c1a483dc5ddca87241';
