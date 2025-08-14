@@ -697,12 +697,12 @@ footer {
 /* Dark Mode */
 @media (prefers-color-scheme: dark) {
     body {
-        background-color: #121212;
+        background-color: #181a1c;
         color: #ffffff;
     }
 
     header, nav, footer {
-        background-color: #121212;
+        background-color: #181a1c;
     }
 
     .menu-toggle, .contact-link, .name a {
@@ -795,7 +795,7 @@ footer {
     }
 
     .blog-nav {
-        background-color: #121212;
+        background-color: #181a1c;
     }
     
     .back-link {
