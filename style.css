@@ -16,7 +16,7 @@
 body {
     font-family: 'Gidolinya', 'Latin Modern Roman', serif;
     background-color: #ffffff;
-    color: #121212;
+    color: #1a1918;
     line-height: 1.6;
     font-weight: 200;
 }
@@ -58,7 +58,7 @@ section {
 /* Header & Navigation */
 header {
     background-color: #ffffff;
-    color: #121212;
+    color: #1a1918;
     padding: 1rem 0;
     position: fixed;
     width: 100%;
@@ -80,7 +80,7 @@ header {
 }
 
 .name a {
-    color: #121212;
+    color: #1a1918;
     text-decoration: none;
 }
 
@@ -88,7 +88,7 @@ header {
     display: none;
     cursor: pointer;
     font-size: 1.6875rem;
-    color: #121212;
+    color: #1a1918;
 }
 
 nav ul {
@@ -98,7 +98,7 @@ nav ul {
 }
 
 nav a {
-    color: #121212; /* Default link color */
+    color: #1a1918; /* Default link color */
     text-decoration: none; /* Remove underline by default */
     transition: opacity 0.3s ease;
     font-size: 1.125rem;
@@ -110,7 +110,7 @@ nav a:hover {
 
 nav a.active,
 nav a[aria-current="page"] {
-    border-bottom: 1px solid #121212 !important;
+    border-bottom: 1px solid #1a1918 !important;
 }
 
 /* Footer */
@@ -130,7 +130,7 @@ footer {
 }
 
 .contact-link {
-    color: #121212;
+    color: #1a1918;
     text-decoration: none;
     transition: opacity 0.3s ease;
     font-size: 1.125rem;
@@ -195,7 +195,7 @@ footer {
     width: 100%;
     text-align: center;
     font-size: 1.375rem;
-    color: #121212;
+    color: #1a1918;
     font-style: italic;
     margin-bottom: 1.25rem;
 }
@@ -216,7 +216,7 @@ footer {
     padding: 1rem;
     cursor: pointer;
     font-size: 1.875rem;
-    color: #121212;
+    color: #1a1918;
     transition: background-color 0.3s ease;
 }
 
@@ -235,13 +235,13 @@ footer {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background: #121212;
+    background: #1a1918;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 .indicator.active {
-    background: #121212;
+    background: #1a1918;
 }
 
 /* Mobile Menu Overlay */
@@ -311,7 +311,7 @@ footer {
 .resume-section {
     margin-bottom: 2rem;
     padding-bottom: 1.5rem;
-    border-bottom: 1px solid #121212; /* Matching header/footer border */
+    border-bottom: 1px solid #1a1918; /* Matching header/footer border */
 }
 
 .resume-section:last-child {
@@ -414,7 +414,7 @@ footer {
 .blog-index-item h2 a {
     color: inherit;
     text-decoration: none;
-    border-bottom: 1px solid #121212;
+    border-bottom: 1px solid #1a1918;
     transition: opacity 0.3s ease;
 }
 
@@ -444,7 +444,7 @@ footer {
 }
 
 .back-link {
-    color: #121212;
+    color: #1a1918;
     text-decoration: none;
     font-size: 1.125rem;
     transition: opacity 0.3s ease;
@@ -476,7 +476,7 @@ footer {
     font-weight: 700;
     line-height: 1.2;
     margin: 2rem 0 1rem 0;
-    color: #121212;
+    color: #1a1918;
 }
 
 .post-content h2 {
@@ -484,7 +484,7 @@ footer {
     font-weight: 600;
     line-height: 1.3;
     margin: 2.5rem 0 1rem 0;
-    color: #121212;
+    color: #1a1918;
 }
 
 .post-content h3 {
@@ -492,14 +492,14 @@ footer {
     font-weight: 600;
     line-height: 1.3;
     margin: 2rem 0 0.75rem 0;
-    color: #121212;
+    color: #1a1918;
 }
 
 .post-content p {
     font-size: 1.125rem;
     line-height: 1.7;
     margin: 0 0 1.25rem 0;
-    color: #121212;
+    color: #1a1918;
 }
 
 .post-content p:last-child {
@@ -515,7 +515,7 @@ footer {
 }
 
 .post-content a {
-    color: #121212;
+    color: #1a1918;
     text-decoration: underline;
     text-decoration-color: rgba(18, 18, 18, 0.3);
     text-underline-offset: 2px;
@@ -523,11 +523,11 @@ footer {
 }
 
 .post-content a:hover {
-    text-decoration-color: #121212;
+    text-decoration-color: #1a1918;
 }
 
 .post-content blockquote {
-    border-left: 3px solid #121212;
+    border-left: 3px solid #1a1918;
     margin: 2rem 0;
     padding: 1rem 0 1rem 1.5rem;
     font-style: italic;
@@ -564,7 +564,7 @@ footer {
 
 .post-content ul li::before {
     content: "•";
-    color: #121212;
+    color: #1a1918;
     font-size: 1.25rem;
     position: absolute;
     left: 0;
@@ -598,7 +598,7 @@ footer {
 
 .post-content hr {
     border: none;
-    border-top: 1px solid #121212;
+    border-top: 1px solid #1a1918;
     margin: 3rem 0;
 }
 
@@ -623,9 +623,9 @@ footer {
 }
 
 .error-message a {
-    color: #121212;
+    color: #1a1918;
     text-decoration: none;
-    border-bottom: 1px solid #121212;
+    border-bottom: 1px solid #1a1918;
 }
 
 /* Mobile adjustments for blog */
@@ -697,12 +697,12 @@ footer {
 /* Dark Mode */
 @media (prefers-color-scheme: dark) {
     body {
-        background-color: #181a1c;
+        background-color: #1a1918;
         color: #ffffff;
     }
 
     header, nav, footer {
-        background-color: #181a1c;
+        background-color: #1a1918;
     }
 
     .menu-toggle, .contact-link, .name a {
@@ -795,7 +795,7 @@ footer {
     }
 
     .blog-nav {
-        background-color: #181a1c;
+        background-color: #1a1918;
     }
     
     .back-link {
