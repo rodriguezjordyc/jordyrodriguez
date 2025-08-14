@@ -427,8 +427,10 @@ footer {
 }
 
 .post-excerpt {
-    color: #545454;
+    color: #121212;
     line-height: 1.6;
+    font-size: 1rem;
+    font-weight: 200;
 }
 
 /* Individual Blog Post Styles */
@@ -789,7 +791,7 @@ footer {
     }
 
     .post-excerpt {
-        color: #a9a9a9;
+        color: #ffffff;
     }
 
     .blog-nav {
