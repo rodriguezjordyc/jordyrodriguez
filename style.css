@@ -593,7 +593,7 @@ footer {
 
 .post-content hr {
     border: none;
-    border-top: 1px solid rgba(18, 18, 18, 0.1);
+    border-top: 1px solid #121212;
     margin: 3rem 0;
 }
 
@@ -824,7 +824,7 @@ footer {
     }
     
     .post-content hr {
-        border-top-color: rgba(255, 255, 255, 0.1);
+        border-top-color: #ffffff;
     }
     
     .post-content img {
