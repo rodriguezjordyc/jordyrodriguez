@@ -89,7 +89,7 @@ async function showBlogIndex() {
         html += `
             <article class="blog-index-item">
                 <h2><a href="#${slug}" onclick="event.preventDefault(); showBlogPost('${slug}'); return false;">${post.title}</a></h2>
-                <p class="post-excerpt">${post.blog_type} • Published ${formattedDate}</p>
+                <p class="post-excerpt">${post.excerpt}</p>
             </article>
         `;
     }
@@ -134,7 +134,7 @@ async function showBlogPost(slug) {
         postContentElement.innerHTML = `
             <div class="post-header">
                 <h1>${post.title}</h1>
-                <p class="post-meta">${post.blog_type} • Published ${formattedDate}</p>
+                <p class="post-meta">${formattedDate}</p>
             </div>
             <div class="post-body">
                 ${content}

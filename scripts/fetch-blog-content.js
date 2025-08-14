@@ -114,11 +114,11 @@ async function fetchNotionPosts() {
                         blog_type: blogType,
                         url: page.url,
                         content: content,
-                        excerpt: `From ${blogType} • ${new Date(publishedDate).toLocaleDateString('en-US', { 
+                        excerpt: new Date(publishedDate).toLocaleDateString('en-US', { 
                             year: 'numeric', 
                             month: 'short', 
                             day: 'numeric' 
-                        })}`
+                        })
                     };
                 }
             }
