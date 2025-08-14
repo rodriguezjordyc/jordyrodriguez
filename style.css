@@ -397,7 +397,7 @@ footer {
 }
 
 .blog-index-item {
-    padding-bottom: 0.75rem;
+    padding-bottom: 0;
 }
 
 .blog-index-item:last-child {
@@ -405,7 +405,7 @@ footer {
 }
 
 .blog-index-item h2 {
-    font-size: 1.6875rem;
+    font-size: 1.375rem;
     margin-bottom: 0.5rem;
 }
 
@@ -603,11 +603,11 @@ footer {
     }
     
     .blog-index-item {
-        padding-bottom: 1rem;
+        padding-bottom: 0;
     }
     
     .blog-index-item h2 {
-        font-size: 1.4625rem;
+        font-size: 1.25rem;
     }
     
     .post-header h1 {
