@@ -562,6 +562,20 @@ footer {
     top: 0;
 }
 
+.post-content ul ul {
+    margin: 0.5rem 0 0 0;
+    padding-left: 1rem;
+}
+
+.post-content ul ul li {
+    margin-bottom: 0.5rem;
+}
+
+.post-content ul ul li::before {
+    content: "◦";
+    font-size: 1.125rem;
+}
+
 .post-content ol {
     list-style: decimal;
 }
@@ -577,6 +591,15 @@ footer {
     border: none;
     border-top: 1px solid rgba(18, 18, 18, 0.1);
     margin: 3rem 0;
+}
+
+.post-content img {
+    max-width: 100%;
+    height: auto;
+    margin: 2rem auto;
+    display: block;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(18, 18, 18, 0.1);
 }
 
 .loading {
@@ -648,6 +671,11 @@ footer {
     .post-content ul li, .post-content ol li {
         font-size: 1.0625rem;
         line-height: 1.65;
+    }
+    
+    .post-content img {
+        margin: 1.5rem auto;
+        border-radius: 6px;
     }
 }
 
@@ -772,7 +800,8 @@ footer {
         text-decoration-color: #ffffff;
     }
     
-    .post-content ul li::before {
+    .post-content ul li::before,
+    .post-content ul ul li::before {
         color: #ffffff;
     }
     
@@ -783,6 +812,10 @@ footer {
     
     .post-content hr {
         border-top-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    .post-content img {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     }
 
     .error-message a {

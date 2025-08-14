@@ -150,18 +150,41 @@ async function fetchPostContent(pageId) {
         }
 
         const data = await response.json();
-        return convertNotionBlocksToHTML(data.results || []);
+        return await convertNotionBlocksToHTML(data.results || []);
     } catch (error) {
         console.error(`Error fetching content for ${pageId}:`, error);
         return '';
     }
 }
 
+// Fetch children blocks for nested content
+async function fetchChildrenBlocks(blockId) {
+    try {
+        const response = await fetch(`https://api.notion.com/v1/blocks/${blockId}/children`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${NOTION_API_KEY}`,
+                'Notion-Version': '2022-06-28'
+            }
+        });
+
+        if (!response.ok) {
+            return [];
+        }
+
+        const data = await response.json();
+        return data.results || [];
+    } catch (error) {
+        console.error(`Error fetching children for ${blockId}:`, error);
+        return [];
+    }
+}
+
 // Convert Notion blocks to HTML
-function convertNotionBlocksToHTML(blocks) {
+async function convertNotionBlocksToHTML(blocks) {
     let html = '';
     
-    blocks.forEach(block => {
+    for (const block of blocks) {
         switch (block.type) {
             case 'paragraph':
                 const paragraphText = extractTextFromRichText(block.paragraph.rich_text);
@@ -187,12 +210,34 @@ function convertNotionBlocksToHTML(blocks) {
             
             case 'bulleted_list_item':
                 const bulletText = extractTextFromRichText(block.bulleted_list_item.rich_text);
-                html += `<li>${bulletText}</li>`;
+                let listItem = bulletText;
+                
+                // Check if this block has children (nested items)
+                if (block.has_children) {
+                    const children = await fetchChildrenBlocks(block.id);
+                    if (children.length > 0) {
+                        const nestedContent = await convertNotionBlocksToHTML(children);
+                        listItem += nestedContent;
+                    }
+                }
+                
+                html += `<li>${listItem}</li>`;
                 break;
             
             case 'numbered_list_item':
                 const numberText = extractTextFromRichText(block.numbered_list_item.rich_text);
-                html += `<li>${numberText}</li>`;
+                let numberedItem = numberText;
+                
+                // Check if this block has children (nested items)
+                if (block.has_children) {
+                    const children = await fetchChildrenBlocks(block.id);
+                    if (children.length > 0) {
+                        const nestedContent = await convertNotionBlocksToHTML(children);
+                        numberedItem += nestedContent;
+                    }
+                }
+                
+                html += `<li>${numberedItem}</li>`;
                 break;
             
             case 'quote':
@@ -200,11 +245,33 @@ function convertNotionBlocksToHTML(blocks) {
                 html += `<blockquote><p>${quoteText}</p></blockquote>`;
                 break;
             
+            case 'image':
+                const imageBlock = block.image;
+                let imageUrl = '';
+                let altText = '';
+                
+                // Handle different image sources
+                if (imageBlock.type === 'external') {
+                    imageUrl = imageBlock.external.url;
+                } else if (imageBlock.type === 'file') {
+                    imageUrl = imageBlock.file.url;
+                }
+                
+                // Get alt text from caption
+                if (imageBlock.caption && imageBlock.caption.length > 0) {
+                    altText = extractTextFromRichText(imageBlock.caption);
+                }
+                
+                if (imageUrl) {
+                    html += `<img src="${imageUrl}" alt="${altText}" />`;
+                }
+                break;
+            
             case 'divider':
                 html += '<hr>';
                 break;
         }
-    });
+    }
 
     // Wrap consecutive list items in appropriate list tags
     html = html.replace(/(<li>.*?<\/li>)+/g, (match) => {
