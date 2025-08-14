@@ -3,6 +3,24 @@ document.addEventListener('DOMContentLoaded', function() {
     showBlogIndex();
 });
 
+// Debug function to test blog loading
+async function testBlogPosts() {
+    console.log('=== Testing Blog Posts ===');
+    try {
+        const posts = await fetchBlogPosts();
+        console.log('Posts loaded:', posts);
+        
+        // Test loading a specific post
+        const firstSlug = Object.keys(posts)[0];
+        if (firstSlug) {
+            console.log('Testing post:', firstSlug);
+            showBlogPost(firstSlug);
+        }
+    } catch (error) {
+        console.error('Test failed:', error);
+    }
+}
+
 // Cache for blog posts
 let cachedBlogPosts = null;
 
@@ -11,20 +29,22 @@ let cachedBlogPosts = null;
 async function fetchBlogPosts() {
     // Return cached data if available
     if (cachedBlogPosts) {
+        console.log('Returning cached blog posts');
         return cachedBlogPosts;
     }
 
     try {
         console.log('Loading blog posts from local file...');
         
-        const response = await fetch('blog-content.json');
+        const response = await fetch('./blog-content.json');
         
         if (!response.ok) {
-            throw new Error(`Failed to load blog content: ${response.status}`);
+            throw new Error(`Failed to load blog content: ${response.status} - ${response.statusText}`);
         }
         
         const data = await response.json();
         console.log(`Loaded ${Object.keys(data.posts).length} posts from local file`);
+        console.log('Posts loaded:', Object.keys(data.posts));
         console.log(`Last updated: ${data.lastUpdated}`);
         
         // Cache the posts
@@ -34,13 +54,21 @@ async function fetchBlogPosts() {
         
     } catch (error) {
         console.error('Error loading blog posts:', error);
+        console.error('Full error details:', error);
         return {};
     }
 }
 
 // Get post content from cached data (already fetched)
 function getPostContent(posts, slug) {
+    console.log('Getting content for slug:', slug);
+    console.log('Available posts:', Object.keys(posts));
     const post = posts[slug];
+    console.log('Found post:', !!post);
+    if (post) {
+        console.log('Post has content:', !!post.content);
+        console.log('Content length:', post.content ? post.content.length : 0);
+    }
     return post ? post.content || '' : '';
 }
 
@@ -103,11 +131,15 @@ async function showBlogIndex() {
 
 // Show individual blog post
 async function showBlogPost(slug) {
+    console.log('showBlogPost called with slug:', slug);
     const posts = cachedBlogPosts || await fetchBlogPosts();
+    console.log('Posts retrieved:', !!posts, Object.keys(posts).length);
     const post = posts[slug];
+    console.log('Post found:', !!post);
     
     if (!post) {
         console.error('Post not found:', slug);
+        console.error('Available slugs:', Object.keys(posts));
         return;
     }
 
@@ -126,8 +158,9 @@ async function showBlogPost(slug) {
     
     // Get post content (already fetched)
     const content = getPostContent(posts, slug);
+    console.log('Content retrieved:', !!content, content ? content.substring(0, 100) + '...' : 'No content');
     
-    if (content) {
+    if (content && content.trim()) {
         const formattedDate = new Date(post.published_date).toLocaleDateString('en-US', { 
             year: 'numeric', 
             month: 'long', 
@@ -144,10 +177,15 @@ async function showBlogPost(slug) {
             </div>
         `;
     } else {
+        console.log('No content found for post:', post.title);
+        console.log('Post object:', post);
         postContentElement.innerHTML = `
             <div class="error-message">
                 <h2>Content not available</h2>
-                <p>This post content is not currently available. Please try refreshing the page.</p>
+                <p>This post content is not currently available. Please check the browser console for debugging information.</p>
+                <p>Post: ${post.title}</p>
+                <p>Has content property: ${!!post.content}</p>
+                <p>Content length: ${post.content ? post.content.length : 'N/A'}</p>
                 <p><a href="#" onclick="showBlogIndex()">← Back to Blog</a></p>
             </div>
         `;
