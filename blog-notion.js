@@ -12,6 +12,46 @@ const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 const NOTION_API_KEY = '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';
 const DATABASE_ID = '24f79889bbb181c1a483dc5ddca87241';
 
+// Static blog data as fallback when API is unavailable
+const staticBlogPosts = {
+    'complexity-science-in-football': {
+        id: '24f79889-bbb1-8167-9d57-d604b46d421d',
+        title: 'Complexity Science in Football',
+        status: 'Published',
+        published_date: '2025-08-11',
+        blog_type: 'Personal',
+        url: 'https://www.notion.so/Complexity-Science-in-Football-24f79889bbb181679d57d604b46d421d',
+        excerpt: 'From Personal • Aug 11, 2025'
+    },
+    'ai-literacy-divide': {
+        id: '24f79889-bbb1-817f-ba30-d262bd791b8a',
+        title: 'AI Literacy Divide',
+        status: 'Published',
+        published_date: '2025-08-11',
+        blog_type: 'Modern Stewardship',
+        url: 'https://www.notion.so/AI-Literacy-Divide-24f79889bbb1817fba30d262bd791b8a',
+        excerpt: 'From Modern Stewardship • Aug 11, 2025'
+    },
+    'the-intimacy-tax': {
+        id: '24f79889-bbb1-8100-9614-ceb93ab835ac',
+        title: 'The Intimacy Tax',
+        status: 'Published',
+        published_date: '2025-07-31',
+        blog_type: 'Modern Stewardship',
+        url: 'https://www.notion.so/The-Intimacy-Tax-24f79889bbb181009614ceb93ab835ac',
+        excerpt: 'From Modern Stewardship • Jul 31, 2025'
+    },
+    'about-modern-stewardship': {
+        id: '24f79889-bbb1-8107-9358-cf2ec83be22d',
+        title: 'About Modern Stewardship',
+        status: 'Published',
+        published_date: '2025-07-26',
+        blog_type: 'Modern Stewardship',
+        url: 'https://www.notion.so/About-Modern-Stewardship-24f79889bbb181079358cf2ec83be22d',
+        excerpt: 'From Modern Stewardship • Jul 26, 2025'
+    }
+};
+
 // Fetch blog posts from Notion API via CORS proxy
 async function fetchNotionPosts() {
     // Check if we have valid cached data
@@ -22,133 +62,138 @@ async function fetchNotionPosts() {
     try {
         console.log('Fetching posts from Notion API...');
         
-        // Using a CORS proxy to bypass browser restrictions
-        const proxyUrl = 'https://api.allorigins.win/raw?url=';
-        const notionUrl = `https://api.notion.com/v1/databases/${DATABASE_ID}/query`;
+        // Try multiple CORS proxy services in sequence
+        const proxies = [
+            'https://api.codetabs.com/v1/proxy?quest=',
+            'https://thingproxy.freeboard.io/fetch/'
+        ];
         
-        const response = await fetch(proxyUrl + encodeURIComponent(notionUrl), {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${NOTION_API_KEY}`,
-                    'Notion-Version': '2022-06-28',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    filter: {
-                        property: 'Status',
-                        select: {
-                            equals: 'Published'
-                        }
+        for (let i = 0; i < proxies.length; i++) {
+            try {
+                const proxyUrl = proxies[i];
+                const notionUrl = `https://api.notion.com/v1/databases/${DATABASE_ID}/query`;
+                
+                const response = await fetch(proxyUrl + notionUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${NOTION_API_KEY}`,
+                        'Notion-Version': '2022-06-28',
+                        'Content-Type': 'application/json'
                     },
-                    sorts: [
-                        {
-                            property: 'Published',
-                            direction: 'descending'
-                        }
-                    ]
-                })
-            })
-        });
+                    body: JSON.stringify({
+                        filter: {
+                            property: 'Status',
+                            select: {
+                                equals: 'Published'
+                            }
+                        },
+                        sorts: [
+                            {
+                                property: 'Published',
+                                direction: 'descending'
+                            }
+                        ]
+                    })
+                });
 
-        if (!response.ok) {
-            console.error('Failed to fetch from Notion:', response.status, response.statusText);
-            return {};
-        }
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Notion response received from proxy', i + 1);
 
-        const data = await response.json();
-        console.log('Notion response received');
+                    const posts = {};
+                    
+                    if (data.results) {
+                        data.results.forEach(page => {
+                            const titleProperty = page.properties.Title;
+                            const statusProperty = page.properties.Status;
+                            const publishedProperty = page.properties.Published;
+                            const blogProperty = page.properties.Blog;
 
-        const posts = {};
-        
-        if (data.results) {
-            data.results.forEach(page => {
-                // Extract properties
-                const titleProperty = page.properties.Title;
-                const statusProperty = page.properties.Status;
-                const publishedProperty = page.properties.Published;
-                const blogProperty = page.properties.Blog;
+                            const title = titleProperty?.title?.[0]?.plain_text || 'Untitled';
+                            const status = statusProperty?.select?.name || '';
+                            const publishedDate = publishedProperty?.date?.start || '';
+                            const blogType = blogProperty?.select?.name || '';
 
-                // Get title
-                const title = titleProperty?.title?.[0]?.plain_text || 'Untitled';
-                
-                // Get status
-                const status = statusProperty?.select?.name || '';
-                
-                // Get published date
-                const publishedDate = publishedProperty?.date?.start || '';
-                
-                // Get blog type
-                const blogType = blogProperty?.select?.name || '';
+                            if (status === 'Published' && (blogType === 'Personal' || blogType === 'Modern Stewardship')) {
+                                const slug = title.toLowerCase()
+                                    .replace(/\s+/g, '-')
+                                    .replace(/[^\w-]/g, '');
 
-                // Only include published posts from both blogs
-                if (status === 'Published' && (blogType === 'Personal' || blogType === 'Modern Stewardship')) {
-                    // Create slug from title
-                    const slug = title.toLowerCase()
-                        .replace(/\s+/g, '-')
-                        .replace(/[^\w-]/g, '');
+                                posts[slug] = {
+                                    id: page.id,
+                                    title: title,
+                                    status: status,
+                                    published_date: publishedDate,
+                                    blog_type: blogType,
+                                    url: page.url,
+                                    excerpt: `From ${blogType} • ${new Date(publishedDate).toLocaleDateString('en-US', { 
+                                        year: 'numeric', 
+                                        month: 'short', 
+                                        day: 'numeric' 
+                                    })}`
+                                };
+                            }
+                        });
+                    }
 
-                    posts[slug] = {
-                        id: page.id,
-                        title: title,
-                        status: status,
-                        published_date: publishedDate,
-                        blog_type: blogType,
-                        url: page.url,
-                        excerpt: `From ${blogType} • ${new Date(publishedDate).toLocaleDateString('en-US', { 
-                            year: 'numeric', 
-                            month: 'short', 
-                            day: 'numeric' 
-                        })}`
-                    };
+                    console.log('Total processed posts:', Object.keys(posts).length);
+                    cachedBlogPosts = posts;
+                    cacheTimestamp = Date.now();
+                    return posts;
                 }
-            });
+            } catch (proxyError) {
+                console.warn(`Proxy ${i + 1} failed:`, proxyError);
+                continue;
+            }
         }
-
-        console.log('Total processed posts:', Object.keys(posts).length);
-
-        // Cache the results
-        cachedBlogPosts = posts;
-        cacheTimestamp = Date.now();
         
-        return posts;
+        // All proxies failed, use static fallback
+        console.log('All API attempts failed, using static blog data');
+        return staticBlogPosts;
+        
     } catch (error) {
         console.error('Error fetching posts:', error);
-        return {};
+        console.log('Using static blog data as fallback');
+        return staticBlogPosts;
     }
 }
 
 // Fetch individual post content from Notion API via CORS proxy
 async function fetchPostContent(pageId) {
     try {
-        const proxyUrl = 'https://api.allorigins.win/raw?url=';
-        const notionUrl = `https://api.notion.com/v1/blocks/${pageId}/children`;
+        // Try multiple CORS proxy services for content fetching
+        const proxies = [
+            'https://api.codetabs.com/v1/proxy?quest=',
+            'https://thingproxy.freeboard.io/fetch/'
+        ];
         
-        const response = await fetch(proxyUrl + encodeURIComponent(notionUrl), {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${NOTION_API_KEY}`,
-                    'Notion-Version': '2022-06-28'
+        for (let i = 0; i < proxies.length; i++) {
+            try {
+                const proxyUrl = proxies[i];
+                const notionUrl = `https://api.notion.com/v1/blocks/${pageId}/children`;
+                
+                const response = await fetch(proxyUrl + notionUrl, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${NOTION_API_KEY}`,
+                        'Notion-Version': '2022-06-28'
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    return convertNotionBlocksToHTML(data.results || []);
                 }
-            })
-        });
-
-        if (!response.ok) {
-            console.error('Failed to fetch post content:', response.status);
-            return '';
+            } catch (proxyError) {
+                console.warn(`Content proxy ${i + 1} failed:`, proxyError);
+                continue;
+            }
         }
-
-        const data = await response.json();
-        return convertNotionBlocksToHTML(data.results || []);
+        
+        // All proxies failed, return a message to redirect to Notion
+        console.log('Content fetching failed, redirecting to Notion');
+        return '';
+        
     } catch (error) {
         console.error('Error fetching post content:', error);
         return '';
@@ -345,7 +390,8 @@ async function showBlogPost(slug) {
         postContentElement.innerHTML = `
             <div class="error-message">
                 <h2>Unable to load post content</h2>
-                <p>There was an error loading this post. Please try again later.</p>
+                <p>This post content couldn't be loaded due to browser restrictions. You can read the full post on Notion:</p>
+                <p><a href="${post.url}" target="_blank" rel="noopener noreferrer">Read "${post.title}" on Notion →</a></p>
                 <p><a href="#" onclick="showBlogIndex()">← Back to Blog</a></p>
             </div>
         `;
