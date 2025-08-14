@@ -437,7 +437,6 @@ footer {
     padding: 1rem 0;
     margin-bottom: 1rem;
     z-index: 1000;
-    border-bottom: 1px solid rgba(18, 18, 18, 0.1);
 }
 
 .back-link {
@@ -791,7 +790,6 @@ footer {
 
     .blog-nav {
         background-color: #121212;
-        border-bottom-color: rgba(255, 255, 255, 0.1);
     }
     
     .back-link {
