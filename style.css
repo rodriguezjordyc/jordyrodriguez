@@ -439,6 +439,7 @@ footer {
     top: 4rem; /* Position flush against fixed header */
     background-color: #ffffff;
     padding: 1rem 0;
+    margin-top: 4rem;
     margin-bottom: 1rem;
     z-index: 1000;
 }
@@ -646,6 +647,7 @@ footer {
     .blog-nav {
         top: 3.5rem; /* Flush against mobile header */
         padding: 0.75rem 0;
+        margin-top: 3.5rem;
     }
     
     .post-header h1 {
