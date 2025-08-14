@@ -463,9 +463,10 @@ footer {
 }
 
 .post-meta {
-    color: #545454;
+    color: #121212;
     margin-bottom: 0;
-    font-size: 1.375rem;
+    font-size: 1rem;
+    font-weight: 200;
 }
 
 .post-content h1 {
@@ -804,6 +805,10 @@ footer {
     }
     
     .post-content p {
+        color: #ffffff;
+    }
+    
+    .post-meta {
         color: #ffffff;
     }
     
