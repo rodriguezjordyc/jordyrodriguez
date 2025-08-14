@@ -1,0 +1,16 @@
+{
+  "name": "jordy-rodriguez-website",
+  "version": "1.0.0",
+  "description": "Personal website for Jordy Rodriguez",
+  "main": "index.html",
+  "scripts": {
+    "fetch-blog": "node scripts/fetch-blog-content.js",
+    "build": "npm run fetch-blog"
+  },
+  "devDependencies": {
+    "node-fetch": "^3.3.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

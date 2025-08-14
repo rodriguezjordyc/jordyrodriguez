@@ -1,0 +1,235 @@
+#!/usr/bin/env node
+
+const fs = require('fs');
+const path = require('path');
+
+// Notion API configuration
+const NOTION_API_KEY = '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';
+const DATABASE_ID = '24f79889bbb181c1a483dc5ddca87241';
+
+// Fetch blog posts from Notion API
+async function fetchNotionPosts() {
+    try {
+        console.log('Fetching posts from Notion API...');
+        
+        const response = await fetch(`https://api.notion.com/v1/databases/${DATABASE_ID}/query`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${NOTION_API_KEY}`,
+                'Notion-Version': '2022-06-28',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                filter: {
+                    property: 'Status',
+                    select: {
+                        equals: 'Published'
+                    }
+                },
+                sorts: [
+                    {
+                        property: 'Published',
+                        direction: 'descending'
+                    }
+                ]
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to fetch from Notion: ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        console.log(`Fetched ${data.results.length} posts from Notion`);
+
+        const posts = {};
+        
+        if (data.results) {
+            for (const page of data.results) {
+                const titleProperty = page.properties.Title;
+                const statusProperty = page.properties.Status;
+                const publishedProperty = page.properties.Published;
+                const blogProperty = page.properties.Blog;
+
+                const title = titleProperty?.title?.[0]?.plain_text || 'Untitled';
+                const status = statusProperty?.select?.name || '';
+                const publishedDate = publishedProperty?.date?.start || '';
+                const blogType = blogProperty?.select?.name || '';
+
+                if (status === 'Published' && (blogType === 'Personal' || blogType === 'Modern Stewardship')) {
+                    const slug = title.toLowerCase()
+                        .replace(/\s+/g, '-')
+                        .replace(/[^\w-]/g, '');
+
+                    console.log(`Processing post: ${title}`);
+                    
+                    // Fetch content for this post
+                    const content = await fetchPostContent(page.id);
+
+                    posts[slug] = {
+                        id: page.id,
+                        title: title,
+                        status: status,
+                        published_date: publishedDate,
+                        blog_type: blogType,
+                        url: page.url,
+                        content: content,
+                        excerpt: `From ${blogType} • ${new Date(publishedDate).toLocaleDateString('en-US', { 
+                            year: 'numeric', 
+                            month: 'short', 
+                            day: 'numeric' 
+                        })}`
+                    };
+                }
+            }
+        }
+
+        console.log(`Total processed posts: ${Object.keys(posts).length}`);
+        return posts;
+        
+    } catch (error) {
+        console.error('Error fetching posts:', error);
+        throw error;
+    }
+}
+
+// Fetch individual post content from Notion API
+async function fetchPostContent(pageId) {
+    try {
+        const response = await fetch(`https://api.notion.com/v1/blocks/${pageId}/children`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${NOTION_API_KEY}`,
+                'Notion-Version': '2022-06-28'
+            }
+        });
+
+        if (!response.ok) {
+            console.error(`Failed to fetch content for ${pageId}: ${response.status}`);
+            return '';
+        }
+
+        const data = await response.json();
+        return convertNotionBlocksToHTML(data.results || []);
+    } catch (error) {
+        console.error(`Error fetching content for ${pageId}:`, error);
+        return '';
+    }
+}
+
+// Convert Notion blocks to HTML
+function convertNotionBlocksToHTML(blocks) {
+    let html = '';
+    
+    blocks.forEach(block => {
+        switch (block.type) {
+            case 'paragraph':
+                const paragraphText = extractTextFromRichText(block.paragraph.rich_text);
+                if (paragraphText.trim()) {
+                    html += `<p>${paragraphText}</p>`;
+                }
+                break;
+            
+            case 'heading_1':
+                const h1Text = extractTextFromRichText(block.heading_1.rich_text);
+                html += `<h1>${h1Text}</h1>`;
+                break;
+            
+            case 'heading_2':
+                const h2Text = extractTextFromRichText(block.heading_2.rich_text);
+                html += `<h2>${h2Text}</h2>`;
+                break;
+            
+            case 'heading_3':
+                const h3Text = extractTextFromRichText(block.heading_3.rich_text);
+                html += `<h3>${h3Text}</h3>`;
+                break;
+            
+            case 'bulleted_list_item':
+                const bulletText = extractTextFromRichText(block.bulleted_list_item.rich_text);
+                html += `<li>${bulletText}</li>`;
+                break;
+            
+            case 'numbered_list_item':
+                const numberText = extractTextFromRichText(block.numbered_list_item.rich_text);
+                html += `<li>${numberText}</li>`;
+                break;
+            
+            case 'quote':
+                const quoteText = extractTextFromRichText(block.quote.rich_text);
+                html += `<blockquote><p>${quoteText}</p></blockquote>`;
+                break;
+            
+            case 'divider':
+                html += '<hr>';
+                break;
+        }
+    });
+
+    // Wrap consecutive list items in appropriate list tags
+    html = html.replace(/(<li>.*?<\/li>)+/g, (match) => {
+        return `<ul>${match}</ul>`;
+    });
+
+    return html;
+}
+
+// Extract text from Notion rich text objects
+function extractTextFromRichText(richTextArray) {
+    if (!richTextArray || !Array.isArray(richTextArray)) {
+        return '';
+    }
+    
+    return richTextArray.map(textObj => {
+        let text = textObj.plain_text || '';
+        
+        // Apply formatting
+        if (textObj.annotations) {
+            if (textObj.annotations.bold) {
+                text = `<strong>${text}</strong>`;
+            }
+            if (textObj.annotations.italic) {
+                text = `<em>${text}</em>`;
+            }
+            if (textObj.annotations.code) {
+                text = `<code>${text}</code>`;
+            }
+        }
+        
+        // Handle links
+        if (textObj.href) {
+            text = `<a href="${textObj.href}" target="_blank" rel="noopener noreferrer">${text}</a>`;
+        }
+        
+        return text;
+    }).join('');
+}
+
+// Main execution
+async function main() {
+    try {
+        // Fetch all blog posts with content
+        const posts = await fetchNotionPosts();
+        
+        // Save to JSON file
+        const outputPath = path.join(__dirname, '..', 'blog-content.json');
+        fs.writeFileSync(outputPath, JSON.stringify({
+            posts: posts,
+            lastUpdated: new Date().toISOString()
+        }, null, 2));
+        
+        console.log(`Blog content saved to ${outputPath}`);
+        console.log(`Updated at: ${new Date().toISOString()}`);
+        
+    } catch (error) {
+        console.error('Failed to fetch and save blog content:', error);
+        process.exit(1);
+    }
+}
+
+// Run if this script is executed directly
+if (require.main === module) {
+    main();
+}
+
+module.exports = { fetchNotionPosts, fetchPostContent };
