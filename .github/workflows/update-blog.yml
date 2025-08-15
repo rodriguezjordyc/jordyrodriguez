@@ -11,6 +11,9 @@ on:
       - 'scripts/fetch-blog-content.js'
       - '.github/workflows/update-blog.yml'
 
+permissions:
+  contents: write
+
 jobs:
   update-blog:
     runs-on: ubuntu-latest
