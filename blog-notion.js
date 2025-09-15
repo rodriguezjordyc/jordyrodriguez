@@ -145,7 +145,7 @@ async function showBlogPost(slug) {
             <div class="error-message">
                 <h2>Content not available</h2>
                 <p>This post content is not currently available. Please try refreshing the page.</p>
-                <p><a href="#" onclick="showBlogIndex()">← Back to Blog</a></p>
+                <p><a href="#" onclick="showBlogIndex()">← Back to Thoughts</a></p>
             </div>
         `;
     }
