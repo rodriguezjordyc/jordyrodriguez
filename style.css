@@ -14,11 +14,27 @@
     font-synthesis-weight: none;
 }
 
+html {
+    font-size: 90%;
+}
+
+:root {
+    --header-padding-y: 1rem;
+    --header-content-height: 2.25rem;
+}
+
+@media (min-width: 1024px) {
+    :root {
+        --header-padding-y: 3rem;
+    }
+}
+
 body {
     font-family: 'Gidolinya', 'Latin Modern Roman', serif;
     background-color: #FAFAF7;
     color: #1a1918;
     line-height: 1.6;
+    padding-top: calc(var(--header-padding-y) * 2 + var(--header-content-height));
     letter-spacing: 0.005em;
     font-weight: 200;
 }
@@ -59,8 +75,8 @@ p {
 
 /* Layout */
 main {
-    max-width: 800px;
-    margin: 8rem auto 2rem;
+    max-width: 65ch;
+    margin: 2rem auto 2rem;
     padding: 0 2rem;
 }
 
@@ -72,7 +88,7 @@ section {
 header {
     background-color: #FAFAF7;
     color: #1a1918;
-    padding: 1rem 0;
+    padding: var(--header-padding-y) 0;
     position: fixed;
     width: 100%;
     top: 0;
@@ -80,7 +96,7 @@ header {
 }
 
 .header-content {
-    max-width: 800px;
+    max-width: 65ch;
     margin: 0 auto;
     padding: 0 2rem;
     display: flex;
@@ -134,7 +150,7 @@ footer {
 }
 
 .contact-links {
-    max-width: 800px;
+    max-width: 65ch;
     margin: 0 auto;
     padding: 2rem;
     display: flex;
@@ -289,7 +305,7 @@ footer {
         background-color: #FAFAF7;
         display: none;
         z-index: 1001;
-        padding-top: 4rem;
+        padding-top: calc(var(--header-padding-y) * 2 + var(--header-content-height));
     }
 
     nav.active {
@@ -449,7 +465,7 @@ footer {
 /* Individual Blog Post Styles */
 .blog-nav {
     position: sticky;
-    top: 4rem; /* Position flush against fixed header */
+    top: calc(var(--header-padding-y) * 2 + var(--header-content-height)); /* Position flush against fixed header */
     background-color: #FAFAF7;
     padding: 1rem 0;
     margin-top: 4rem;
@@ -658,7 +674,7 @@ footer {
     }
     
     .blog-nav {
-        top: 3.5rem; /* Flush against mobile header */
+        top: calc(var(--header-padding-y) * 2 + var(--header-content-height)); /* Flush against header */
         padding: 0.75rem 0;
         margin-top: 3.5rem;
     }
