@@ -1,7 +1,7 @@
 /* Font Face Declaration */
 @font-face {
     font-family: 'Gidolinya';
-    src: url('Fonts/Gidole-Regular.ttf') format('truetype');
+    src: url('Fonts/Gidolinya-Regular.otf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
