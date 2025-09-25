@@ -11,6 +11,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-synthesis-weight: none;
 }
 
 body {
@@ -18,7 +19,14 @@ body {
     background-color: #FAFAF7;
     color: #1a1918;
     line-height: 1.6;
+    letter-spacing: 0.005em;
     font-weight: 200;
+}
+
+/* Preserve readable emphasis without heavy synthetic bold elsewhere */
+b, strong {
+    font-weight: 600;
+    font-synthesis-weight: auto;
 }
 
 /* Prevent overscroll/bounce on mobile browsers */
@@ -37,6 +45,11 @@ h1 {
 h2 {
     font-size: 2.25rem;
     margin-bottom: 1rem;
+}
+
+h1, h2, h3 {
+    font-weight: 500;
+    letter-spacing: 0.01em;
 }
 
 p {
@@ -407,7 +420,7 @@ footer {
 
 .blog-index-item h2 {
     font-size: 1.125rem;
-    font-weight: normal;
+    font-weight: 500;
     margin-bottom: 0.5rem;
 }
 
@@ -474,7 +487,7 @@ footer {
 
 .post-content h1 {
     font-size: 1.6875rem;
-    font-weight: 700;
+    font-weight: 500;
     line-height: 1.2;
     margin: 2rem 0 1rem 0;
     color: #1a1918;
@@ -482,7 +495,7 @@ footer {
 
 .post-content h2 {
     font-size: 1.4766rem;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 1.3;
     margin: 2.5rem 0 1rem 0;
     color: #1a1918;
@@ -490,7 +503,7 @@ footer {
 
 .post-content h3 {
     font-size: 1.1602rem;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 1.3;
     margin: 2rem 0 0.75rem 0;
     color: #1a1918;
@@ -641,7 +654,7 @@ footer {
     
     .blog-index-item h2 {
         font-size: 1.0625rem;
-        font-weight: normal;
+        font-weight: 500;
     }
     
     .blog-nav {
