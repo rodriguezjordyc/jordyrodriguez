@@ -33,7 +33,7 @@ body {
     font-family: 'Gidolinya', 'Latin Modern Roman', serif;
     background-color: #FAFAF7;
     color: #1a1918;
-    line-height: 1.6;
+    line-height: 1.7;
     padding-top: calc(var(--header-padding-y) * 2 + var(--header-content-height));
     letter-spacing: 0.005em;
     font-weight: 200;
@@ -75,7 +75,7 @@ p {
 
 /* Layout */
 main {
-    max-width: 65ch;
+    max-width: 70ch;
     margin: 2rem auto 2rem;
     padding: 0 2rem;
 }
@@ -96,7 +96,7 @@ header {
 }
 
 .header-content {
-    max-width: 65ch;
+    max-width: 70ch;
     margin: 0 auto;
     padding: 0 2rem;
     display: flex;
@@ -150,7 +150,7 @@ footer {
 }
 
 .contact-links {
-    max-width: 65ch;
+    max-width: 70ch;
     margin: 0 auto;
     padding: 2rem;
     display: flex;
@@ -457,7 +457,7 @@ footer {
 
 .post-excerpt {
     color: #545454;
-    line-height: 1.6;
+    line-height: 1.7;
     font-size: 1rem;
     font-weight: 100;
 }
@@ -700,7 +700,7 @@ footer {
     
     .post-content p {
         font-size: 1.0625rem;
-        line-height: 1.65;
+        line-height: 1.7;
         margin: 0 0 1.125rem 0;
     }
     
@@ -716,7 +716,7 @@ footer {
     
     .post-content ul li, .post-content ol li {
         font-size: 1.0625rem;
-        line-height: 1.65;
+        line-height: 1.7;
     }
     
     .post-content img {
@@ -748,9 +748,6 @@ footer {
 
     /* Dark mode mobile menu adjustments */
     @media (max-width: 768px) {
-        nav a {
-            /* No borders needed */
-        }
     }
 
     .carousel-button {
