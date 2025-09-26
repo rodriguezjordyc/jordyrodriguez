@@ -167,3 +167,127 @@ window.addEventListener('load', function() {
         showBlogPost(hash);
     }
 });
+
+// Image Zoom Functionality
+class ImageZoom {
+    constructor() {
+        this.overlay = null;
+        this.isOpen = false;
+        this.init();
+    }
+
+    init() {
+        // Create overlay element
+        this.createOverlay();
+
+        // Add event listeners for images
+        this.bindEvents();
+
+        // Handle keyboard events
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.isOpen) {
+                this.close();
+            }
+        });
+    }
+
+    createOverlay() {
+        this.overlay = document.createElement('div');
+        this.overlay.className = 'image-zoom-overlay';
+
+        const container = document.createElement('div');
+        container.className = 'image-zoom-container';
+
+        const closeButton = document.createElement('button');
+        closeButton.className = 'image-zoom-close';
+        closeButton.innerHTML = '×';
+        closeButton.setAttribute('aria-label', 'Close image');
+
+        this.overlay.appendChild(container);
+        this.overlay.appendChild(closeButton);
+        document.body.appendChild(this.overlay);
+
+        // Close on overlay click
+        this.overlay.addEventListener('click', (e) => {
+            if (e.target === this.overlay || e.target === closeButton) {
+                this.close();
+            }
+        });
+    }
+
+    bindEvents() {
+        // Use event delegation to handle dynamically loaded images
+        document.addEventListener('click', (e) => {
+            const img = e.target;
+            if (img.tagName === 'IMG' && img.closest('.post-content')) {
+                e.preventDefault();
+                this.open(img);
+            }
+        });
+    }
+
+    open(img) {
+        if (this.isOpen) return;
+
+        this.isOpen = true;
+
+        // Create zoomed image
+        const zoomedImg = img.cloneNode();
+        zoomedImg.style.cursor = 'zoom-out';
+
+        // Clear container and add new image
+        const container = this.overlay.querySelector('.image-zoom-container');
+        container.innerHTML = '';
+        container.appendChild(zoomedImg);
+
+        // Prevent body scroll
+        document.body.style.overflow = 'hidden';
+
+        // Show overlay with animation
+        this.overlay.classList.add('active');
+
+        // Handle touch events for mobile
+        let startY = 0;
+        const handleTouchStart = (e) => {
+            startY = e.touches[0].clientY;
+        };
+
+        const handleTouchMove = (e) => {
+            if (!this.isOpen) return;
+
+            const currentY = e.touches[0].clientY;
+            const diffY = Math.abs(currentY - startY);
+
+            // If user swipes down significantly, close the modal
+            if (currentY - startY > 100 && diffY > 50) {
+                this.close();
+            }
+        };
+
+        this.overlay.addEventListener('touchstart', handleTouchStart, { passive: true });
+        this.overlay.addEventListener('touchmove', handleTouchMove, { passive: true });
+    }
+
+    close() {
+        if (!this.isOpen) return;
+
+        this.isOpen = false;
+
+        // Hide overlay
+        this.overlay.classList.remove('active');
+
+        // Restore body scroll
+        document.body.style.overflow = '';
+
+        // Clean up after animation
+        setTimeout(() => {
+            const container = this.overlay.querySelector('.image-zoom-container');
+            container.innerHTML = '';
+        }, 300);
+    }
+}
+
+// Initialize image zoom when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    new ImageZoom();
+});
