@@ -254,13 +254,16 @@ async function convertNotionBlocksToHTML(blocks) {
                         for (let i = 0; i < tableRows.length; i++) {
                             const row = tableRows[i];
                             if (row.type === 'table_row') {
-                                const isFirstRow = i === 0;
-                                const isHeaderRow = hasColumnHeader && isFirstRow;
+                                const isHeaderRow = hasColumnHeader && i === 0;
 
-                                // Determine if we need thead/tbody structure
-                                const rowTag = isHeaderRow ? 'thead' : (i === 1 && hasColumnHeader ? 'tbody' : '');
+                                // Open thead or tbody as needed
+                                if (isHeaderRow) {
+                                    html += '<thead>';
+                                } else if (i === 0 || (hasColumnHeader && i === 1)) {
+                                    // Open tbody for the first non-header row
+                                    html += '<tbody>';
+                                }
 
-                                if (rowTag) html += `<${rowTag}>`;
                                 html += '<tr>';
 
                                 // Process each cell in the row
@@ -282,8 +285,13 @@ async function convertNotionBlocksToHTML(blocks) {
                                 }
 
                                 html += '</tr>';
-                                if (rowTag === 'thead') html += '</thead>';
-                                if (i === tableRows.length - 1 && i > 0 && hasColumnHeader) html += '</tbody>';
+                                
+                                // Close thead or tbody at the right time
+                                if (isHeaderRow) {
+                                    html += '</thead>';
+                                } else if (i === tableRows.length - 1) {
+                                    html += '</tbody>';
+                                }
                             }
                         }
 
