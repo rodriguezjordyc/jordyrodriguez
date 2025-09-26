@@ -70,6 +70,17 @@
       "source": "/index.html",
       "destination": "/about",
       "permanent": true
+    },
+    {
+      "source": "/(.*)",
+      "destination": "https://jordy.space/$1",
+      "permanent": true,
+      "has": [
+        {
+          "type": "host",
+          "value": "www.jordy.space"
+        }
+      ]
     }
   ]
 }
