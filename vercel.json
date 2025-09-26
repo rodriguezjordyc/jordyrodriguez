@@ -1,9 +1,5 @@
 {
   "build": {
     "env": { "NODE_VERSION": "18" }
-  },
-  "rewrites": [
-    { "source": "/", "destination": "/index.html" },
-    { "source": "/thoughts", "destination": "/blog.html" }
-  ]
+  }
 }
