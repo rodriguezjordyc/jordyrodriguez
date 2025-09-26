@@ -75,7 +75,7 @@ p {
 
 /* Layout */
 main {
-    max-width: 70ch;
+    max-width: 85ch;
     margin: 2rem auto 2rem;
     padding: 0 2rem;
 }
@@ -96,7 +96,7 @@ header {
 }
 
 .header-content {
-    max-width: 70ch;
+    max-width: 85ch;
     margin: 0 auto;
     padding: 0 2rem;
     display: flex;
@@ -150,7 +150,7 @@ footer {
 }
 
 .contact-links {
-    max-width: 70ch;
+    max-width: 85ch;
     margin: 0 auto;
     padding: 2rem;
     display: flex;
@@ -471,6 +471,9 @@ footer {
     margin-top: 4rem;
     margin-bottom: 1rem;
     z-index: 1000;
+    max-width: 85ch;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .back-link {
