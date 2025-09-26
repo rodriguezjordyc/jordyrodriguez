@@ -1,51 +1,14 @@
 #!/usr/bin/env node
 
 const fs = require('fs');
-const path = require('path');
-
-// For Node.js environments that don't have fetch built-in
-if (typeof fetch === 'undefined') {
-    global.fetch = require('https').get;
-    // Simplified fetch polyfill for Node.js
-    global.fetch = async (url, options = {}) => {
-        const https = require('https');
-        const urlParsed = new URL(url);
-        
-        return new Promise((resolve, reject) => {
-            const req = https.request({
-                hostname: urlParsed.hostname,
-                port: urlParsed.port || 443,
-                path: urlParsed.pathname + urlParsed.search,
-                method: options.method || 'GET',
-                headers: options.headers || {}
-            }, (res) => {
-                let data = '';
-                res.on('data', chunk => data += chunk);
-                res.on('end', () => {
-                    resolve({
-                        ok: res.statusCode >= 200 && res.statusCode < 300,
-                        status: res.statusCode,
-                        statusText: res.statusMessage,
-                        json: () => Promise.resolve(JSON.parse(data)),
-                        text: () => Promise.resolve(data)
-                    });
-                });
-            });
-            
-            req.on('error', reject);
-            
-            if (options.body) {
-                req.write(options.body);
-            }
-            
-            req.end();
-        });
-    };
-}
+const path = require('path'); // For creating file paths
+const https = require('https'); // For downloading images
 
 // Notion API configuration
 const NOTION_API_KEY = process.env.NOTION_API_KEY || 'your-api-key-here';
 const DATABASE_ID = '24f79889bbb181c1a483dc5ddca87241';
+const IMAGES_DIR = path.join(__dirname, '..', 'public', 'images');
+const IMAGES_PUBLIC_PATH = '/public/images';
 
 // Fetch blog posts from Notion API
 async function fetchNotionPosts() {
@@ -180,31 +143,13 @@ async function fetchChildrenBlocks(blockId) {
     }
 }
 
-// Helper function to wrap consecutive list items in ul tags
-function wrapListItems(html) {
-    // Use a more robust regex approach to wrap consecutive <li> elements
-    // This handles nested HTML content properly
-
-    // Pattern: Find sequences of <li>...content...</li> tags that are consecutive
-    let result = html.replace(/(<li>[\s\S]*?<\/li>)(\s*)(<li>[\s\S]*?<\/li>)/g, (match, li1, spacing, li2) => {
-        // If we find consecutive list items, start building a list
-        return li1 + spacing + li2;
-    });
-
-    // Now wrap all consecutive <li> groups in <ul> tags
-    // This pattern matches one or more <li> elements that are consecutive (with possible whitespace)
-    result = result.replace(/(<li>[\s\S]*?<\/li>(\s*<li>[\s\S]*?<\/li>)*)/g, (match) => {
-        return `<ul>${match}</ul>`;
-    });
-
-    return result;
-}
-
 // Convert Notion blocks to HTML
 async function convertNotionBlocksToHTML(blocks) {
     let html = '';
     
-    for (const block of blocks) {
+    for (let i = 0; i < blocks.length; i++) {
+        const block = blocks[i];
+
         switch (block.type) {
             case 'paragraph':
                 const paragraphText = extractTextFromRichText(block.paragraph.rich_text);
@@ -229,54 +174,53 @@ async function convertNotionBlocksToHTML(blocks) {
                 break;
             
             case 'bulleted_list_item':
-                const bulletText = extractTextFromRichText(block.bulleted_list_item.rich_text);
-                let listItem = bulletText;
-                
-                // Check if this block has children (nested items)
-                if (block.has_children) {
-                    const children = await fetchChildrenBlocks(block.id);
-                    if (children.length > 0) {
-                        const nestedContent = await convertNotionBlocksToHTML(children);
-                        listItem += nestedContent;
-                    }
+                // Start of a new bulleted list
+                html += '<ul>';
+                html += await processListItem(block);
+
+                // Continue adding items to the same list
+                while (i + 1 < blocks.length && blocks[i + 1].type === 'bulleted_list_item') {
+                    i++;
+                    html += await processListItem(blocks[i]);
                 }
-                
-                html += `<li>${listItem}</li>`;
+                html += '</ul>';
                 break;
             
             case 'numbered_list_item':
-                const numberText = extractTextFromRichText(block.numbered_list_item.rich_text);
-                let numberedItem = numberText;
-                
-                // Check if this block has children (nested items)
-                if (block.has_children) {
-                    const children = await fetchChildrenBlocks(block.id);
-                    if (children.length > 0) {
-                        const nestedContent = await convertNotionBlocksToHTML(children);
-                        numberedItem += nestedContent;
-                    }
+                // Start of a new numbered list
+                html += '<ol>';
+                html += await processListItem(block);
+
+                // Continue adding items to the same list
+                while (i + 1 < blocks.length && blocks[i + 1].type === 'numbered_list_item') {
+                    i++;
+                    html += await processListItem(blocks[i]);
                 }
-                
-                html += `<li>${numberedItem}</li>`;
+                html += '</ol>';
                 break;
             
             case 'quote':
                 const quoteText = extractTextFromRichText(block.quote.rich_text);
                 html += `<blockquote><p>${quoteText}</p></blockquote>`;
                 break;
-            
+
             case 'image':
                 const imageBlock = block.image;
                 let imageUrl = '';
                 let altText = '';
-                
+
                 // Handle different image sources
                 if (imageBlock.type === 'external') {
                     imageUrl = imageBlock.external.url;
                 } else if (imageBlock.type === 'file') {
                     imageUrl = imageBlock.file.url;
                 }
-                
+
+                // Download the image and get its local path
+                if (imageUrl) {
+                    imageUrl = await downloadAndSaveImage(imageUrl, block.id);
+                }
+
                 // Get alt text from caption
                 if (imageBlock.caption && imageBlock.caption.length > 0) {
                     altText = extractTextFromRichText(imageBlock.caption);
@@ -286,7 +230,7 @@ async function convertNotionBlocksToHTML(blocks) {
                     html += `<img src="${imageUrl}" alt="${altText}" />`;
                 }
                 break;
-            
+
             case 'divider':
                 html += '<hr>';
                 break;
@@ -350,12 +294,28 @@ async function convertNotionBlocksToHTML(blocks) {
         }
     }
 
-    // Wrap consecutive list items in appropriate list tags
-    // This handles nested lists properly by processing from the inside out
-    html = wrapListItems(html);
-
     return html;
 }
+
+// Helper to process a single list item (bulleted or numbered)
+async function processListItem(block) {
+    const itemType = block.type; // 'bulleted_list_item' or 'numbered_list_item'
+    const richText = block[itemType].rich_text;
+    
+    let listItemContent = extractTextFromRichText(richText);
+
+    // Handle nested lists
+    if (block.has_children) {
+        const children = await fetchChildrenBlocks(block.id);
+        if (children.length > 0) {
+            const nestedContent = await convertNotionBlocksToHTML(children);
+            listItemContent += nestedContent;
+        }
+    }
+
+    return `<li>${listItemContent}</li>`;
+}
+
 
 // Extract text from Notion rich text objects
 function extractTextFromRichText(richTextArray) {
@@ -386,6 +346,46 @@ function extractTextFromRichText(richTextArray) {
         
         return text;
     }).join('');
+}
+
+// Download and save an image locally
+async function downloadAndSaveImage(url, blockId) {
+    if (!fs.existsSync(IMAGES_DIR)) {
+        fs.mkdirSync(IMAGES_DIR, { recursive: true });
+    }
+
+    const urlObject = new URL(url);
+    const extension = path.extname(urlObject.pathname) || '.png'; // Default to .png if no extension
+    const filename = `${blockId}${extension}`;
+    const localPath = path.join(IMAGES_DIR, filename);
+    const publicPath = path.join(IMAGES_PUBLIC_PATH, filename).replace(/\\/g, '/');
+
+    // If image already exists, just return its path
+    if (fs.existsSync(localPath)) {
+        return publicPath;
+    }
+
+    console.log(`Downloading image: ${url}`);
+
+    return new Promise((resolve, reject) => {
+        https.get(url, (response) => {
+            if (response.statusCode !== 200) {
+                console.error(`Failed to download image ${url}. Status: ${response.statusCode}`);
+                resolve(''); // Return empty string on failure to not break the build
+                return;
+            }
+            const fileStream = fs.createWriteStream(localPath);
+            response.pipe(fileStream);
+            fileStream.on('finish', () => {
+                fileStream.close();
+                console.log(`Saved image to ${localPath}`);
+                resolve(publicPath);
+            });
+        }).on('error', (err) => {
+            console.error(`Error downloading image ${url}:`, err);
+            resolve(''); // Return empty string on failure
+        });
+    });
 }
 
 // Main execution

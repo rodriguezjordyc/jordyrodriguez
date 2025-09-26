@@ -16,7 +16,7 @@ async function fetchBlogPosts() {
     }
 
     try {
-        const response = await fetch('./blog-content.json');
+        const response = await fetch('/blog-content.json');
         
         if (!response.ok) {
             throw new Error(`Failed to load blog content: ${response.status}`);
