@@ -861,53 +861,31 @@ footer {
         box-shadow: 0 4px 12px rgba(18, 18, 18, 0.1);
     }
 
-    /* Mobile table styles - Card layout approach */
+    /* Mobile table styles - Keep original layout, fix word wrapping */
     .post-content table {
         margin: 1.5rem 0;
-        font-size: 0.9375rem;
-        border: none;
-        box-shadow: none;
+        font-size: 0.875rem;
+        border-radius: 6px;
+        display: table;
+        width: 100%;
+        table-layout: auto;
+        overflow-wrap: break-word;
+        word-wrap: break-word;
     }
 
-    .post-content thead {
-        display: none;
-    }
-
-    .post-content tbody,
-    .post-content tr {
-        display: block;
-        margin-bottom: 1rem;
-    }
-
-    .post-content tr {
-        background-color: rgba(18, 18, 18, 0.02);
-        border-radius: 8px;
-        padding: 1rem;
-        border: 1px solid rgba(18, 18, 18, 0.1);
-    }
-
+    .post-content th,
     .post-content td {
-        display: block;
-        text-align: left;
-        padding: 0.5rem 0;
-        border: none;
-        position: relative;
-        padding-left: 40%;
+        padding: 0.75rem 0.5rem;
+        font-size: 0.875rem;
         word-break: break-word;
-    }
-
-    .post-content td:before {
-        content: attr(data-label) ": ";
-        position: absolute;
-        left: 0;
-        width: 35%;
-        text-align: left;
-        font-weight: 600;
-        color: #1a1918;
+        white-space: normal;
+        overflow-wrap: break-word;
+        hyphens: auto;
+        min-width: 0;
     }
 
     .post-content th {
-        display: none;
+        font-size: 0.8125rem;
     }
 }
 
@@ -1097,12 +1075,8 @@ footer {
 
     /* Dark mode mobile table styles */
     @media (max-width: 768px) {
-        .post-content tr {
-            background-color: rgba(255, 255, 255, 0.02);
-            border-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .post-content td:before {
+        .post-content th,
+        .post-content td {
             color: #ffffff;
         }
     }
