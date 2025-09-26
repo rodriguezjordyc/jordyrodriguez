@@ -1,11 +1,5 @@
 {
   "build": {
-    "env": {
-      "NOTION_API_KEY": "@notion_api_key",
-      "NODE_VERSION": "18"
-    }
-  },
-  "env": {
-    "NOTION_API_KEY": "@notion_api_key"
+    "env": { "NODE_VERSION": "18" }
   }
 }
