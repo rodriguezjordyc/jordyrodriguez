@@ -4,5 +4,27 @@
   "installCommand": "npm install",
   "build": {
     "env": { "NODE_VERSION": "18" }
-  }
+  },
+  "rewrites": [
+    {
+      "source": "/about",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/thoughts",
+      "destination": "/blog.html"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/index.html",
+      "destination": "/about",
+      "permanent": true
+    },
+    {
+      "source": "/blog.html",
+      "destination": "/thoughts",
+      "permanent": true
+    }
+  ]
 }
