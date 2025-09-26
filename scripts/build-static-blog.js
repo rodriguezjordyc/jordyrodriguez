@@ -28,11 +28,11 @@ function generateArticlePage(post, cleanSlug) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${post.title} - jordy rodriguez</title>
     <meta name="description" content="${post.title} - Published ${formattedDate}">
-    <link rel="icon" type="image/jpeg" href="../pics/jr.jpg">
-    <link rel="shortcut icon" type="image/jpeg" href="../pics/jr.jpg">
-    <link rel="apple-touch-icon" href="../pics/jr.jpg">
+    <link rel="icon" type="image/jpeg" href="../../pics/jr.jpg">
+    <link rel="shortcut icon" type="image/jpeg" href="../../pics/jr.jpg">
+    <link rel="apple-touch-icon" href="../../pics/jr.jpg">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Latin+Modern+Roman&display=swap">
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../../style.css">
 </head>
 <body>
     <header>
@@ -75,7 +75,7 @@ function generateArticlePage(post, cleanSlug) {
         </div>
     </footer>
 
-    <script src="../menu.js"></script>
+    <script src="../../menu.js"></script>
     <script>
       window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
     </script>
