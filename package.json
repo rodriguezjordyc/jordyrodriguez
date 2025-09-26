@@ -1,0 +1,11 @@
+{
+  "name": "jordyrodriguez-website",
+  "version": "1.0.0",
+  "description": "Personal website and blog for jordy rodriguez.",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/fetch-blog-content.js"
+  },
+  "author": "Jordy Rodriguez",
+  "license": "ISC"
+}
