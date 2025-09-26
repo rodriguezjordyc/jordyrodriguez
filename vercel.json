@@ -20,11 +20,6 @@
       "source": "/index.html",
       "destination": "/about",
       "permanent": true
-    },
-    {
-      "source": "/blog.html",
-      "destination": "/thoughts",
-      "permanent": true
     }
   ]
 }
