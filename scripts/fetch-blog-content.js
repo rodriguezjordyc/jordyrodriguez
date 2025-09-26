@@ -8,7 +8,7 @@ const https = require('https'); // For downloading images
 const NOTION_API_KEY = process.env.NOTION_API_KEY || 'your-api-key-here';
 const DATABASE_ID = '24f79889bbb181c1a483dc5ddca87241';
 const IMAGES_DIR = path.join(__dirname, '..', 'public', 'images');
-const IMAGES_PUBLIC_PATH = '/public/images';
+const IMAGES_PUBLIC_PATH = '/images';
 
 // Fetch blog posts from Notion API
 async function fetchNotionPosts() {
@@ -403,7 +403,7 @@ async function main() {
         const posts = await fetchNotionPosts();
         
         // Save to JSON file
-        const outputPath = path.join(__dirname, '..', 'blog-content.json');
+        const outputPath = path.join(__dirname, '..', 'public', 'blog-content.json');
         fs.writeFileSync(outputPath, JSON.stringify({
             posts: posts,
             lastUpdated: new Date().toISOString()

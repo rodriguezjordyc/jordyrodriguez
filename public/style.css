@@ -75,9 +75,29 @@ p {
 
 /* Layout */
 main {
-    max-width: 70ch;
+    max-width: 750px;
+    width: 90%;
     margin: 2rem auto 2rem;
     padding: 0 2rem;
+}
+
+@media (min-width: 768px) {
+    main {
+        width: 85%;
+    }
+}
+
+@media (min-width: 1024px) {
+    main {
+        width: 80%;
+        max-width: 750px;
+    }
+}
+
+@media (min-width: 1200px) {
+    main {
+        max-width: 750px;
+    }
 }
 
 section {
@@ -96,12 +116,32 @@ header {
 }
 
 .header-content {
-    max-width: 70ch;
+    max-width: 750px;
+    width: 90%;
     margin: 0 auto;
     padding: 0 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+@media (min-width: 768px) {
+    .header-content {
+        width: 85%;
+    }
+}
+
+@media (min-width: 1024px) {
+    .header-content {
+        width: 80%;
+        max-width: 750px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .header-content {
+        max-width: 750px;
+    }
 }
 
 .name {
@@ -150,12 +190,32 @@ footer {
 }
 
 .contact-links {
-    max-width: 70ch;
+    max-width: 750px;
+    width: 90%;
     margin: 0 auto;
     padding: 2rem;
     display: flex;
     justify-content: center;
     gap: 2rem;
+}
+
+@media (min-width: 768px) {
+    .contact-links {
+        width: 85%;
+    }
+}
+
+@media (min-width: 1024px) {
+    .contact-links {
+        width: 80%;
+        max-width: 750px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .contact-links {
+        max-width: 750px;
+    }
 }
 
 .contact-link {
@@ -423,7 +483,7 @@ footer {
 .blog-index {
     display: flex;
     flex-direction: column;
-    gap: .8rem;
+    gap: 0.4rem;
 }
 
 .blog-index-item {
@@ -437,13 +497,12 @@ footer {
 .blog-index-item h2 {
     font-size: 1.125rem;
     font-weight: 500;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.2rem;
 }
 
 .blog-index-item h2 a {
     color: inherit;
     text-decoration: none;
-    border-bottom: 1px solid #1a1918;
     transition: opacity 0.3s ease;
 }
 
@@ -919,9 +978,6 @@ footer {
     }
 
     /* Dark mode blog styles */
-    .blog-index-item h2 a {
-        border-bottom-color: #ffffff;
-    }
     
     .blog-index-item h2 a:visited {
         color: inherit;
@@ -1055,14 +1111,15 @@ footer {
 }
 
 .image-zoom-container img {
-    max-width: 100%;
-    max-height: 100%;
+    max-width: 90vw;
+    max-height: 90vh;
     width: auto;
     height: auto;
     border-radius: 8px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     transform: scale(0.8);
     transition: transform 0.3s ease;
+    object-fit: contain;
 }
 
 .image-zoom-overlay.active .image-zoom-container img {
