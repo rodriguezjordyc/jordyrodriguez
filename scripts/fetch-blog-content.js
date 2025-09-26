@@ -270,6 +270,42 @@ async function convertNotionBlocksToHTML(blocks) {
             case 'divider':
                 html += '<hr>';
                 break;
+
+            case 'table':
+                if (block.has_children) {
+                    const tableRows = await fetchChildrenBlocks(block.id);
+                    if (tableRows.length > 0) {
+                        html += '<table>';
+
+                        // Process each table row
+                        for (let i = 0; i < tableRows.length; i++) {
+                            const row = tableRows[i];
+                            if (row.type === 'table_row') {
+                                const isHeaderRow = i === 0; // First row is typically header
+                                const cellTag = isHeaderRow ? 'th' : 'td';
+                                const rowTag = isHeaderRow ? 'thead' : (i === 1 ? 'tbody' : '');
+
+                                if (rowTag) html += `<${rowTag}>`;
+                                html += '<tr>';
+
+                                // Process each cell in the row
+                                if (row.table_row && row.table_row.cells) {
+                                    for (const cell of row.table_row.cells) {
+                                        const cellText = extractTextFromRichText(cell);
+                                        html += `<${cellTag}>${cellText}</${cellTag}>`;
+                                    }
+                                }
+
+                                html += '</tr>';
+                                if (rowTag === 'thead') html += '</thead>';
+                                if (i === tableRows.length - 1 && i > 0) html += '</tbody>';
+                            }
+                        }
+
+                        html += '</table>';
+                    }
+                }
+                break;
         }
     }
 
