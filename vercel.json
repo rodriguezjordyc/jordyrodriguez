@@ -17,10 +17,6 @@
     {
       "source": "/thoughts/(.*)",
       "destination": "/blog.html"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
     }
   ],
   "headers": [
@@ -66,11 +62,6 @@
     }
   ],
   "redirects": [
-    {
-      "source": "/index.html",
-      "destination": "/about",
-      "permanent": true
-    },
     {
       "source": "/(.*)",
       "destination": "https://jordy.space/$1",
