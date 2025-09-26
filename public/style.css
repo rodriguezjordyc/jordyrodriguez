@@ -861,7 +861,7 @@ footer {
         box-shadow: 0 4px 12px rgba(18, 18, 18, 0.1);
     }
 
-    /* Mobile table styles - Card layout approach */
+    /* Mobile table styles - Simple stacked approach */
     .post-content table {
         margin: 1.5rem 0;
         font-size: 0.9375rem;
@@ -876,34 +876,23 @@ footer {
     .post-content tbody,
     .post-content tr {
         display: block;
-        margin-bottom: 1rem;
+        margin-bottom: 1.5rem;
     }
 
     .post-content tr {
-        background-color: rgba(18, 18, 18, 0.02);
-        border-radius: 8px;
-        padding: 1rem;
-        border: 1px solid rgba(18, 18, 18, 0.1);
+        background: none;
+        border: none;
+        padding: 0;
     }
 
     .post-content td {
         display: block;
         text-align: left;
-        padding: 0.5rem 0;
+        padding: 0.25rem 0;
         border: none;
-        position: relative;
-        padding-left: 40%;
-        word-break: break-word;
-    }
-
-    .post-content td:before {
-        content: attr(data-label) ": ";
-        position: absolute;
-        left: 0;
-        width: 35%;
-        text-align: left;
-        font-weight: 600;
-        color: #1a1918;
+        background: none;
+        font-size: 1rem;
+        line-height: 1.6;
     }
 
     .post-content th {
@@ -1097,12 +1086,7 @@ footer {
 
     /* Dark mode mobile table styles */
     @media (max-width: 768px) {
-        .post-content tr {
-            background-color: rgba(255, 255, 255, 0.02);
-            border-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .post-content td:before {
+        .post-content td {
             color: #ffffff;
         }
     }
