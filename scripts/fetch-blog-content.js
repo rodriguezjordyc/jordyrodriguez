@@ -250,6 +250,17 @@ async function convertNotionBlocksToHTML(blocks) {
 
                         html += `<table${tableAttributes}>`;
 
+                        // Extract column headers for data-label attributes
+                        let columnHeaders = [];
+                        if (hasColumnHeader && tableRows.length > 0 && tableRows[0].type === 'table_row') {
+                            const headerRow = tableRows[0];
+                            if (headerRow.table_row && headerRow.table_row.cells) {
+                                columnHeaders = headerRow.table_row.cells.map(cell =>
+                                    extractTextFromRichText(cell).replace(/['"]/g, '&quot;')
+                                );
+                            }
+                        }
+
                         // Process each table row
                         for (let i = 0; i < tableRows.length; i++) {
                             const row = tableRows[i];
@@ -274,13 +285,18 @@ async function convertNotionBlocksToHTML(blocks) {
 
                                         // Determine cell type based on header configuration
                                         let cellTag = 'td';
+                                        let dataLabel = '';
+
                                         if (isHeaderRow) {
                                             cellTag = 'th'; // Column header
                                         } else if (hasRowHeader && j === 0) {
                                             cellTag = 'th'; // Row header (first column)
+                                        } else if (cellTag === 'td' && columnHeaders[j]) {
+                                            // Add data-label for mobile responsive tables
+                                            dataLabel = ` data-label="${columnHeaders[j]}"`;
                                         }
 
-                                        html += `<${cellTag}>${cellText}</${cellTag}>`;
+                                        html += `<${cellTag}${dataLabel}>${cellText}</${cellTag}>`;
                                     }
                                 }
 

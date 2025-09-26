@@ -692,7 +692,7 @@ footer {
 }
 
 .post-content img {
-    max-width: 100%;
+    max-width: 95%;
     height: auto;
     margin: 2rem auto;
     display: block;
@@ -861,35 +861,53 @@ footer {
         box-shadow: 0 4px 12px rgba(18, 18, 18, 0.1);
     }
 
-    /* Mobile table styles */
+    /* Mobile table styles - Card layout approach */
     .post-content table {
         margin: 1.5rem 0;
         font-size: 0.9375rem;
-        border-radius: 6px;
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
-        -webkit-overflow-scrolling: touch;
+        border: none;
+        box-shadow: none;
     }
 
-    .post-content thead,
+    .post-content thead {
+        display: none;
+    }
+
     .post-content tbody,
     .post-content tr {
-        display: table;
-        width: 100%;
-        table-layout: fixed;
+        display: block;
+        margin-bottom: 1rem;
     }
 
-    .post-content th,
+    .post-content tr {
+        background-color: rgba(18, 18, 18, 0.02);
+        border-radius: 8px;
+        padding: 1rem;
+        border: 1px solid rgba(18, 18, 18, 0.1);
+    }
+
     .post-content td {
-        padding: 0.75rem 0.5rem;
-        font-size: 0.9375rem;
+        display: block;
+        text-align: left;
+        padding: 0.5rem 0;
+        border: none;
+        position: relative;
+        padding-left: 40%;
         word-break: break-word;
-        white-space: normal;
+    }
+
+    .post-content td:before {
+        content: attr(data-label) ": ";
+        position: absolute;
+        left: 0;
+        width: 35%;
+        text-align: left;
+        font-weight: 600;
+        color: #1a1918;
     }
 
     .post-content th {
-        font-size: 0.875rem;
+        display: none;
     }
 }
 
@@ -1075,6 +1093,18 @@ footer {
     .post-content table[data-has-column-header="true"][data-has-row-header="true"] tbody th:first-child {
         background-color: rgba(255, 255, 255, 0.03);
         border-right-color: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Dark mode mobile table styles */
+    @media (max-width: 768px) {
+        .post-content tr {
+            background-color: rgba(255, 255, 255, 0.02);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .post-content td:before {
+            color: #ffffff;
+        }
     }
 }
 
