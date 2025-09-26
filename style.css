@@ -693,6 +693,20 @@ footer {
     transition: background-color 0.2s ease;
 }
 
+/* Row header styling (when first column is header) */
+.post-content table[data-has-row-header="true"] tbody th:first-child {
+    background-color: rgba(18, 18, 18, 0.03);
+    font-weight: 600;
+    font-size: 0.975rem;
+    letter-spacing: 0.01em;
+}
+
+/* Mixed header tables (both row and column headers) */
+.post-content table[data-has-column-header="true"][data-has-row-header="true"] tbody th:first-child {
+    background-color: rgba(18, 18, 18, 0.03);
+    border-right: 1px solid rgba(18, 18, 18, 0.1);
+}
+
 .loading {
     text-align: center;
     padding: 3rem;
@@ -983,5 +997,15 @@ footer {
 
     .post-content tbody tr:hover {
         background-color: rgba(255, 255, 255, 0.02);
+    }
+
+    /* Dark mode row header styling */
+    .post-content table[data-has-row-header="true"] tbody th:first-child {
+        background-color: rgba(255, 255, 255, 0.03);
+    }
+
+    .post-content table[data-has-column-header="true"][data-has-row-header="true"] tbody th:first-child {
+        background-color: rgba(255, 255, 255, 0.03);
+        border-right-color: rgba(255, 255, 255, 0.1);
     }
 }

@@ -275,30 +275,51 @@ async function convertNotionBlocksToHTML(blocks) {
                 if (block.has_children) {
                     const tableRows = await fetchChildrenBlocks(block.id);
                     if (tableRows.length > 0) {
-                        html += '<table>';
+                        // Get table configuration from Notion
+                        const hasColumnHeader = block.table?.has_column_header || false;
+                        const hasRowHeader = block.table?.has_row_header || false;
+
+                        // Add data attributes to indicate header configuration
+                        let tableAttributes = '';
+                        if (hasColumnHeader) tableAttributes += ' data-has-column-header="true"';
+                        if (hasRowHeader) tableAttributes += ' data-has-row-header="true"';
+
+                        html += `<table${tableAttributes}>`;
 
                         // Process each table row
                         for (let i = 0; i < tableRows.length; i++) {
                             const row = tableRows[i];
                             if (row.type === 'table_row') {
-                                const isHeaderRow = i === 0; // First row is typically header
-                                const cellTag = isHeaderRow ? 'th' : 'td';
-                                const rowTag = isHeaderRow ? 'thead' : (i === 1 ? 'tbody' : '');
+                                const isFirstRow = i === 0;
+                                const isHeaderRow = hasColumnHeader && isFirstRow;
+
+                                // Determine if we need thead/tbody structure
+                                const rowTag = isHeaderRow ? 'thead' : (i === 1 && hasColumnHeader ? 'tbody' : '');
 
                                 if (rowTag) html += `<${rowTag}>`;
                                 html += '<tr>';
 
                                 // Process each cell in the row
                                 if (row.table_row && row.table_row.cells) {
-                                    for (const cell of row.table_row.cells) {
+                                    for (let j = 0; j < row.table_row.cells.length; j++) {
+                                        const cell = row.table_row.cells[j];
                                         const cellText = extractTextFromRichText(cell);
+
+                                        // Determine cell type based on header configuration
+                                        let cellTag = 'td';
+                                        if (isHeaderRow) {
+                                            cellTag = 'th'; // Column header
+                                        } else if (hasRowHeader && j === 0) {
+                                            cellTag = 'th'; // Row header (first column)
+                                        }
+
                                         html += `<${cellTag}>${cellText}</${cellTag}>`;
                                     }
                                 }
 
                                 html += '</tr>';
                                 if (rowTag === 'thead') html += '</thead>';
-                                if (i === tableRows.length - 1 && i > 0) html += '</tbody>';
+                                if (i === tableRows.length - 1 && i > 0 && hasColumnHeader) html += '</tbody>';
                             }
                         }
 
