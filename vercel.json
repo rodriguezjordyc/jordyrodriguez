@@ -19,6 +19,17 @@
       "destination": "/blog.html"
     }
   ],
+  "headers": [
+    {
+      "source": "/(.*).html",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "text/html; charset=utf-8"
+        }
+      ]
+    }
+  ],
   "redirects": [
     {
       "source": "/index.html",
