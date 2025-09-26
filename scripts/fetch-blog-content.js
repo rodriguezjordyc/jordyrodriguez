@@ -44,7 +44,7 @@ if (typeof fetch === 'undefined') {
 }
 
 // Notion API configuration
-const NOTION_API_KEY = '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';
+const NOTION_API_KEY = process.env.NOTION_API_KEY || 'your-api-key-here';
 const DATABASE_ID = '24f79889bbb181c1a483dc5ddca87241';
 
 // Fetch blog posts from Notion API

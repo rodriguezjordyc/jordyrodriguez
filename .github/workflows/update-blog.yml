@@ -30,6 +30,8 @@ jobs:
         node-version: '18'
 
     - name: Fetch blog content
+      env:
+        NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
       run: node scripts/fetch-blog-content.js
 
     - name: Check for changes
