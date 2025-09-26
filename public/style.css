@@ -191,6 +191,8 @@ nav ul {
 
 nav ul li {
     margin-right: 2rem;
+    list-style: none;
+    border: none;
 }
 
 nav ul li:last-child {
@@ -409,11 +411,24 @@ footer {
         gap: 0;
     }
 
+    nav ul li {
+        margin-right: 0;
+        margin-bottom: 0;
+        border: none !important;
+        border-bottom: 1px solid #FAFAF7 !important; /* Same as background color */
+    }
+
+    nav ul li:last-child {
+        border-bottom: none !important;
+    }
+
     /* Style nav links specifically in mobile view */
     nav a {
+        display: block;
         padding: 1.5rem 2rem;
         font-size: 1.5rem;
         text-align: left;
+        border: none;
     }
 
     nav a:hover {
@@ -967,12 +982,16 @@ footer {
         color: #ffffff;
     }
 
-    nav li:hover {
-        background-color: rgba(255,255,255,0.05);
+    nav ul li {
+        border-bottom: 1px solid #1a1918 !important; /* Same as dark background color */
     }
 
-    nav li {
-        border-bottom: 1px solid rgba(255,255,255,0.1);
+    nav ul li:last-child {
+        border-bottom: none !important;
+    }
+
+    nav a:hover {
+        background-color: rgba(255,255,255,0.05);
     }
 
     /* Dark mode adjustments for resume specific styles */
