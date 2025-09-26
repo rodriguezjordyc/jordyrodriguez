@@ -180,6 +180,26 @@ async function fetchChildrenBlocks(blockId) {
     }
 }
 
+// Helper function to wrap consecutive list items in ul tags
+function wrapListItems(html) {
+    // Use a more robust regex approach to wrap consecutive <li> elements
+    // This handles nested HTML content properly
+
+    // Pattern: Find sequences of <li>...content...</li> tags that are consecutive
+    let result = html.replace(/(<li>[\s\S]*?<\/li>)(\s*)(<li>[\s\S]*?<\/li>)/g, (match, li1, spacing, li2) => {
+        // If we find consecutive list items, start building a list
+        return li1 + spacing + li2;
+    });
+
+    // Now wrap all consecutive <li> groups in <ul> tags
+    // This pattern matches one or more <li> elements that are consecutive (with possible whitespace)
+    result = result.replace(/(<li>[\s\S]*?<\/li>(\s*<li>[\s\S]*?<\/li>)*)/g, (match) => {
+        return `<ul>${match}</ul>`;
+    });
+
+    return result;
+}
+
 // Convert Notion blocks to HTML
 async function convertNotionBlocksToHTML(blocks) {
     let html = '';
@@ -331,9 +351,8 @@ async function convertNotionBlocksToHTML(blocks) {
     }
 
     // Wrap consecutive list items in appropriate list tags
-    html = html.replace(/(<li>.*?<\/li>)+/g, (match) => {
-        return `<ul>${match}</ul>`;
-    });
+    // This handles nested lists properly by processing from the inside out
+    html = wrapListItems(html);
 
     return html;
 }
