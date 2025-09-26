@@ -7,8 +7,16 @@
     <link rel="icon" type="image/jpeg" href="pics/jr.jpg">
     <link rel="shortcut icon" type="image/jpeg" href="pics/jr.jpg">
     <link rel="apple-touch-icon" href="pics/jr.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Latin+Modern+Roman&display=swap">
     <link rel="stylesheet" href="style.css">
+    <noscript>
+        <style>
+            .loading { display: none !important; }
+            .error-message { display: block !important; }
+        </style>
+    </noscript>
 </head>
 <body>
     <header>
@@ -17,8 +25,8 @@
             <div class="menu-toggle">☰</div>
             <nav>
                 <ul>
-                    <a href="/about">about</a>
-                    <a href="/thoughts">thoughts</a>
+                    <li><a href="/about">about</a></li>
+                    <li><a href="/thoughts">thoughts</a></li>
                 </ul>
             </nav>
         </div>
@@ -41,7 +49,7 @@
             <a href="https://github.com/rodriguezjordyc" class="contact-link" target="_blank" rel="noopener noreferrer">github</a>
         </div>
     </footer>
-    <script src="menu.js"></script>
+    <script src="menu.js" onerror="console.warn('Menu script failed to load')"></script>
     <script>
       window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
     </script>

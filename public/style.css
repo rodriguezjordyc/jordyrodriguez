@@ -1,9 +1,17 @@
-/* Font Face Declaration */
+/* Font Face Declaration with fallbacks */
 @font-face {
     font-family: 'Gidolinya';
     src: url('Fonts/Gidole-Regular.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
+}
+
+/* CSS Fallback detection for Google Fonts */
+@media screen and (max-width: 0) {
+    body {
+        font-family: 'Times New Roman', 'Times', serif;
+    }
 }
 
 /* Base styles */
@@ -11,7 +19,11 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-synthesis-weight: none;
+    -webkit-font-feature-settings: "kern" 1;
+    -moz-font-feature-settings: "kern" 1;
+    font-feature-settings: "kern" 1;
+    -webkit-font-kerning: normal;
+    font-kerning: normal;
 }
 
 html {
@@ -30,11 +42,11 @@ html {
 }
 
 body {
-    font-family: 'Gidolinya', 'Latin Modern Roman', serif;
+    font-family: 'Gidolinya', 'Latin Modern Roman', 'Times New Roman', 'Times', serif;
     background-color: #FAFAF7;
     color: #1a1918;
     line-height: 1.7;
-    padding-top: calc(var(--header-padding-y) * 2 + var(--header-content-height));
+    padding-top: calc(var(--header-padding-y, 1rem) * 2 + var(--header-content-height, 2.25rem));
     letter-spacing: 0.005em;
     font-weight: 200;
 }
@@ -120,8 +132,14 @@ header {
     width: 90%;
     margin: 0 auto;
     padding: 0 2rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
     justify-content: space-between;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
 }
 
@@ -161,9 +179,22 @@ header {
 }
 
 nav ul {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     list-style: none;
     gap: 2rem;
+    /* Fallback for gap */
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    margin-right: 2rem;
+}
+
+nav ul li:last-child {
+    margin-right: 0;
 }
 
 nav a {

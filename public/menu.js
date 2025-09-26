@@ -1,9 +1,16 @@
-// Mobile menu functionality
+// Mobile menu functionality with error handling
 document.addEventListener('DOMContentLoaded', function() {
-    const menuToggle = document.querySelector('.menu-toggle');
-    const nav = document.querySelector('nav');
-    const overlay = document.querySelector('.menu-overlay');
-    const navLinks = document.querySelectorAll('nav a');
+    try {
+        const menuToggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('nav');
+        const overlay = document.querySelector('.menu-overlay');
+        const navLinks = document.querySelectorAll('nav a');
+
+        // Safety check for required elements
+        if (!menuToggle || !nav || !overlay) {
+            console.warn('Menu elements not found, mobile menu disabled');
+            return;
+        }
 
     // Toggle menu when hamburger is clicked
     menuToggle.addEventListener('click', function() {
@@ -24,4 +31,8 @@ document.addEventListener('DOMContentLoaded', function() {
             overlay.classList.remove('active');
         });
     });
+
+    } catch (error) {
+        console.error('Error initializing mobile menu:', error);
+    }
 }); 

@@ -1,6 +1,43 @@
+// Global error handler for robustness
+window.addEventListener('error', function(e) {
+    console.error('Global error caught:', e.error);
+
+    // Try to show a fallback message if possible
+    const blogElement = document.getElementById('blog-index') || document.getElementById('blog-post');
+    if (blogElement && blogElement.innerHTML.includes('loading')) {
+        blogElement.innerHTML = `
+            <div class="error-message">
+                <h2>Something Went Wrong</h2>
+                <p>We encountered an unexpected error. Please refresh the page to try again.</p>
+                <p><a href="/about">← Return to About</a></p>
+            </div>
+        `;
+    }
+});
+
+// Unhandled promise rejection handler
+window.addEventListener('unhandledrejection', function(e) {
+    console.error('Unhandled promise rejection:', e.reason);
+    e.preventDefault(); // Prevent browser's default behavior
+});
+
 // Blog Integration using pre-fetched content
 document.addEventListener('DOMContentLoaded', function() {
-    showBlogIndex();
+    try {
+        showBlogIndex();
+    } catch (error) {
+        console.error('Error during blog initialization:', error);
+        const blogElement = document.getElementById('blog-index');
+        if (blogElement) {
+            blogElement.innerHTML = `
+                <div class="error-message">
+                    <h2>Blog Initialization Failed</h2>
+                    <p>Unable to initialize the blog system. Please refresh the page.</p>
+                    <p><a href="/about">← Return to About</a></p>
+                </div>
+            `;
+        }
+    }
 });
 
 
@@ -8,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
 let cachedBlogPosts = null;
 
 
-// Load blog posts from local JSON file
+// Load blog posts from local JSON file with robust error handling
 async function fetchBlogPosts() {
     // Return cached data if available
     if (cachedBlogPosts) {
@@ -16,21 +53,44 @@ async function fetchBlogPosts() {
     }
 
     try {
-        const response = await fetch('/blog-content.json');
-        
-        if (!response.ok) {
-            throw new Error(`Failed to load blog content: ${response.status}`);
+        // Check if fetch is available (polyfill for older browsers)
+        if (typeof fetch === 'undefined') {
+            throw new Error('Fetch API not supported');
         }
-        
+
+        const response = await fetch('/blog-content.json');
+
+        if (!response.ok) {
+            throw new Error(`Failed to load blog content: ${response.status} ${response.statusText}`);
+        }
+
         const data = await response.json();
-        
+
+        // Validate data structure
+        if (!data || typeof data !== 'object' || !data.posts) {
+            throw new Error('Invalid blog data structure');
+        }
+
         // Cache the posts
         cachedBlogPosts = data.posts;
-        
+
         return data.posts;
-        
+
     } catch (error) {
         console.error('Error loading blog posts:', error);
+
+        // Try to show a meaningful error to user
+        const blogIndexElement = document.getElementById('blog-index');
+        if (blogIndexElement) {
+            blogIndexElement.innerHTML = `
+                <div class="error-message">
+                    <h2>Blog Temporarily Unavailable</h2>
+                    <p>We're having trouble loading the blog content. Please try refreshing the page or check back later.</p>
+                    <p><a href="/about">← Return to About</a></p>
+                </div>
+            `;
+        }
+
         return {};
     }
 }
@@ -42,11 +102,17 @@ function getPostContent(posts, slug) {
 }
 
 
-// Load and display blog index
+// Load and display blog index with error handling
 async function showBlogIndex() {
     const blogIndexElement = document.getElementById('blog-index');
     const blogPostElement = document.getElementById('blog-post');
-    
+
+    // Safety check for DOM elements
+    if (!blogIndexElement || !blogPostElement) {
+        console.error('Required DOM elements not found');
+        return;
+    }
+
     // Show loading state
     blogIndexElement.innerHTML = '<div class="loading">Loading posts...</div>';
     blogIndexElement.style.display = 'block';
