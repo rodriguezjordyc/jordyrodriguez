@@ -13,6 +13,10 @@
     {
       "source": "/thoughts",
       "destination": "/blog.html"
+    },
+    {
+      "source": "/thoughts/(.*)",
+      "destination": "/blog.html"
     }
   ],
   "redirects": [
