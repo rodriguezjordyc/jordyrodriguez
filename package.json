@@ -4,7 +4,9 @@
   "description": "Personal website and blog for jordy rodriguez.",
   "private": true,
   "scripts": {
-    "build": "echo 'Static site - no build needed'"
+    "fetch-content": "node scripts/fetch-blog-content.js",
+    "build-blog": "node scripts/build-static-blog.js",
+    "build": "npm run fetch-content && npm run build-blog"
   },
   "author": "Jordy Rodriguez",
   "license": "ISC"
