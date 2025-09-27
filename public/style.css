@@ -222,9 +222,13 @@ nav a {
     font-size: 1.125rem;
 }
 
-nav a:hover {
+nav a:hover,
+nav a:focus {
     opacity: 0.6;
-    background-color: transparent; /* Ensure no background color on desktop */
+    background-color: transparent !important; /* Force no background color */
+    background: none !important; /* Remove any background properties */
+    box-shadow: none !important; /* Remove any box shadows */
+    outline: none !important; /* Remove focus outline */
 }
 
 nav a.active,
