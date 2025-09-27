@@ -34,6 +34,14 @@ html {
     --header-padding-y: 1rem;
     --header-content-height: 2.25rem;
     --base-rhythm: 1.5rem; /* Base spacing unit for vertical rhythm */
+
+    /* Strategic spacing scale */
+    --space-xs: 0.5rem;   /* Related items */
+    --space-sm: 1rem;     /* Close content */
+    --space-md: 1.5rem;   /* Base rhythm */
+    --space-lg: 2.5rem;   /* Section breaks */
+    --space-xl: 4rem;     /* Major divisions */
+    --space-xxl: 6rem;    /* Page sections */
 }
 
 @media (min-width: 1024px) {
@@ -98,15 +106,26 @@ h1, h2, h3 {
 
 p {
     font-size: 1.125rem;
-    margin-bottom: var(--base-rhythm);
+    margin-bottom: var(--space-md);
     line-height: 1.7;
+}
+
+/* Create content groupings */
+p + p {
+    margin-top: var(--space-sm); /* Tighter spacing between related paragraphs */
+}
+
+/* Larger breaks after key statements */
+p:has(+ p:last-of-type),
+p:last-of-type {
+    margin-bottom: var(--space-lg);
 }
 
 /* Layout */
 main {
     max-width: 750px;
     width: 90%;
-    margin: 2rem auto 2rem;
+    margin: var(--space-lg) auto var(--space-xl); /* More generous top/bottom margins */
     padding: 0 2rem;
 }
 
@@ -130,7 +149,12 @@ main {
 }
 
 section {
-    margin-bottom: calc(var(--base-rhythm) * 2); /* 3rem */
+    margin-bottom: var(--space-xxl); /* Major section divisions */
+}
+
+/* Special spacing for about section content */
+#about {
+    padding: var(--space-lg) 0; /* Extra breathing room */
 }
 
 /* Header & Navigation */
@@ -237,17 +261,17 @@ nav a[aria-current="page"] {
 footer {
     width: 100%;
     background-color: #FAFAF7;
-    margin-top: 2rem;
+    margin-top: var(--space-xxl); /* Generous separation from content */
 }
 
 .contact-links {
     max-width: 750px;
     width: 90%;
     margin: 0 auto;
-    padding: 2rem;
+    padding: var(--space-xl) var(--space-lg); /* More refined padding */
     display: flex;
     justify-content: center;
-    gap: 2rem;
+    gap: var(--space-lg); /* Consistent spacing between links */
 }
 
 @media (min-width: 768px) {
@@ -284,7 +308,7 @@ footer {
 .profile-image {
     width: 100%;
     max-width: 130px;
-    margin: 2rem auto;
+    margin: var(--space-lg) auto var(--space-xl); /* More breathing room */
     display: block;
     border-radius: 4px;
 }
@@ -539,7 +563,7 @@ footer {
 .blog-description {
     font-size: 1.375rem;
     font-style: italic;
-    margin-bottom: 3rem;
+    margin-bottom: var(--space-xl); /* Generous space before blog posts */
     line-height: 1.7;
 }
 
@@ -547,7 +571,7 @@ footer {
 .blog-index {
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: var(--space-lg); /* Better separation between blog posts */
 }
 
 .blog-index-item {
@@ -590,9 +614,9 @@ footer {
     position: sticky;
     top: calc(var(--header-padding-y) * 2 + var(--header-content-height)); /* Position flush against fixed header */
     background-color: #FAFAF7;
-    padding: 1rem 0;
-    margin-top: 4rem;
-    margin-bottom: 1rem;
+    padding: var(--space-md) 0;
+    margin-top: var(--space-xl);
+    margin-bottom: var(--space-lg);
     z-index: 1000;
 }
 
@@ -608,7 +632,7 @@ footer {
 }
 
 .post-header {
-    margin-bottom: 3rem;
+    margin-bottom: var(--space-xl); /* Generous space before content */
     text-align: center;
 }
 
@@ -857,9 +881,9 @@ footer {
 /* Mobile adjustments for blog */
 @media (max-width: 768px) {
     .blog-index {
-        gap: 1rem;
+        gap: var(--space-md); /* Maintain proportional spacing on mobile */
     }
-    
+
     .blog-index-item {
         padding-bottom: 0;
     }
@@ -871,8 +895,8 @@ footer {
     
     .blog-nav {
         top: calc(var(--header-padding-y) * 2 + var(--header-content-height)); /* Flush against header */
-        padding: 0.75rem 0;
-        margin-top: 3.5rem;
+        padding: var(--space-sm) 0;
+        margin-top: var(--space-lg);
     }
     
     .post-header h1 {
