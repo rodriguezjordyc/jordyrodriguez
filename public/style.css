@@ -559,7 +559,8 @@ footer {
 .blog-index-item h2 {
     font-size: 1.125rem;
     font-weight: 500;
-    margin-bottom: 0.2rem;
+    margin-bottom: 0.2rem !important; /* Override global h2 margins for tight table of contents */
+    margin-top: 0 !important; /* Override global h2 margins for tight table of contents */
 }
 
 .blog-index-item h2 a {
