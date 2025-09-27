@@ -571,7 +571,7 @@ footer {
 .blog-index {
     display: flex;
     flex-direction: column;
-    gap: var(--space-lg); /* Better separation between blog posts */
+    gap: var(--space-md); /* Tighter spacing for blog table of contents */
 }
 
 .blog-index-item {
